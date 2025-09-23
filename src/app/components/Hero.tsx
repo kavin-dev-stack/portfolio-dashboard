@@ -2,6 +2,7 @@
 
 import MotionWrapper from "./MotionWrapper";
 import HeroCarousel from "./HeroCarousel";
+import Navbar from "./Navbar";
 import Image from "next/image";
 import { FaChevronDown } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -29,7 +30,11 @@ export default function Hero() {
   };
 
   return (
-    <section className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-black to-orange-600 text-white px-8 relative">
+    <section
+      id="hero"
+      className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-black to-orange-600 text-white px-8 relative"
+    >
+      <Navbar />
       {/* Left: Text + CTA */}
       <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left space-y-6">
         <MotionWrapper
