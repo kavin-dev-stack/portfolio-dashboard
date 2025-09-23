@@ -1,7 +1,7 @@
 "use client";
 
 import MotionWrapper from "../components/MotionWrapper";
-import Image from "next/image";
+// import Image from "next/image";
 import { projects } from "../data/projectsData";
 
 export default function Projects() {
@@ -18,12 +18,12 @@ export default function Projects() {
           >
             {/* Project Image */}
             <div className="relative w-full h-48">
-              <Image
+              {/* <Image
                 src={proj.image}
                 alt={proj.name}
                 fill
                 className="object-cover"
-              />
+              /> */}
             </div>
 
             {/* Project Info */}
