@@ -26,6 +26,10 @@
   --container-padding: 1rem; /* 16px */
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* ==============================
    Base styles for elements
 ============================== */
