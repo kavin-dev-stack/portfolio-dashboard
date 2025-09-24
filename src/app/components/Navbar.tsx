@@ -28,7 +28,6 @@ export default function Navigation() {
         }
       });
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -111,7 +110,7 @@ export default function Navigation() {
       </nav>
 
       {/* 🔹 Floating Dots (Right Side) */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col items-center space-y-4 z-40">
+      {/* <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col items-center space-y-4 z-40">
         {sections.map((section) => (
           <button
             key={section}
@@ -129,7 +128,7 @@ export default function Navigation() {
             )}
           </button>
         ))}
-      </div>
+      </div> */}
     </>
   );
 }
