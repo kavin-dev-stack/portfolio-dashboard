@@ -207,30 +207,38 @@ const About = () => {
       {/* Fun Facts Flip Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-20 relative z-10">
         {funFacts.map((fact, i) => (
-          <div key={i} className="relative h-44 cursor-pointer group">
-            {/* Front */}
+          <div
+            key={i}
+            className="relative h-44 [perspective:1000px] cursor-pointer"
+          >
             <motion.div
-              className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl 
-        bg-gradient-to-tl from-orange-400 to-amber-950 shadow-xl border border-white/20
-        hover:shadow-[0_0_20px_rgba(255,200,100,0.8)] transition-shadow duration-100"
-              whileHover={{ opacity: 0, scale: 1.05 }}
+              className="relative w-full h-full"
+              whileHover={{ rotateY: 180, scale: 1.05 }}
               transition={{ duration: 0.7, ease: "easeInOut" }}
+              style={{ transformStyle: "preserve-3d" }}
             >
-              <div className="text-white text-4xl">{fact.icon}</div>
-              <p className="mt-3 text-lg font-semibold text-white">
-                {fact.title}
-              </p>
-            </motion.div>
+              {/* Front */}
+              <div
+                className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl 
+          bg-gradient-to-br from-orange-400 to-amber-700 shadow-xl border border-white/20
+          backface-hidden hover:shadow-[0_0_20px_rgba(255,200,100,0.8)] transition-shadow duration-100"
+              >
+                <div className="text-white text-4xl">{fact.icon}</div>
+                <p className="mt-3 text-lg font-semibold text-white">
+                  {fact.title}
+                </p>
+              </div>
 
-            {/* Back */}
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center rounded-2xl 
-        bg-gradient-to-tl from-amber-500 to-orange-400 text-black text-center px-4
-        shadow-xl border border-white/20 opacity-0"
-              whileHover={{ opacity: 1, scale: 1.05 }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-            >
-              <h3>{fact.desc}</h3>
+              {/* Back */}
+              <div
+                className="absolute inset-0 flex items-center justify-center rounded-2xl 
+          bg-gradient-to-br from-amber-500 to-orange-400 text-center px-4
+          [transform:rotateY(180deg)] backface-hidden hover:shadow-[0_0_20px_rgba(255,200,100)] transition-shadow duration-100"
+              >
+                <div className="[transform:rotateY(360deg)]">
+                  <h3>{fact.desc}</h3>
+                </div>
+              </div>
             </motion.div>
           </div>
         ))}
