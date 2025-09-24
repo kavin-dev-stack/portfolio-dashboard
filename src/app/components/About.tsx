@@ -1,11 +1,16 @@
 "use client";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import {
   FaGraduationCap,
   FaBriefcase,
   FaRocket,
   FaDownload,
+  FaDumbbell,
+  FaMusic,
+  FaPaintBrush,
+  FaRobot,
 } from "react-icons/fa";
 
 const milestones = [
@@ -28,7 +33,7 @@ const milestones = [
     title: "Upskilling & AI Projects",
     icon: <FaRocket className="text-orange-500 text-xl" />,
     description:
-      "Currently building PromptMate & Business Process Optimizer, mastering FastAPI, React, and modern full-stack development.",
+      "Currently building AI tools, mastering FastAPI, React, and modern full-stack development.",
   },
 ];
 
@@ -39,11 +44,77 @@ const stats = [
 ];
 
 const funFacts = [
-  { icon: "🏋️", title: "Fitness", desc: "Early riser & disciplined gym-goer" },
-  { icon: "🎶", title: "Music", desc: "Coding with lo-fi beats on loop" },
-  { icon: "🎨", title: "UI/UX", desc: "Love crafting clean, modern UIs" },
-  { icon: "🤖", title: "AI Enthusiast", desc: "Exploring AI-powered apps" },
+  {
+    icon: <FaDumbbell className="text-4xl text-white" />,
+    title: "Fitness",
+    desc: "Early riser & disciplined gym-goer",
+  },
+  {
+    icon: <FaMusic className="text-4xl text-white" />,
+    title: "Music",
+    desc: "Coding with lo-fi beats on loop",
+  },
+  {
+    icon: <FaPaintBrush className="text-4xl text-white" />,
+    title: "UI/UX",
+    desc: "Love crafting clean, modern UIs",
+  },
+  {
+    icon: <FaRobot className="text-4xl text-white" />,
+    title: "AI Enthusiast",
+    desc: "Exploring AI-powered apps",
+  },
 ];
+
+const AnimatedImage = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollY } = useScroll();
+
+  // Get top offset of the section
+  const [offsetTop, setOffsetTop] = useState(800);
+
+  useEffect(() => {
+    if (ref.current) {
+      setOffsetTop(ref.current.offsetTop);
+    }
+  }, [ref]);
+
+  // Animate only when section is visible
+  const y = useTransform(
+    scrollY,
+    [offsetTop - 600, offsetTop + 600],
+    [100, -100]
+  );
+  const scale = useTransform(
+    scrollY,
+    [offsetTop - 600, offsetTop + 600],
+    [1, 1.05]
+  );
+  const rotate = useTransform(
+    scrollY,
+    [offsetTop - 600, offsetTop + 600],
+    [0, 5]
+  );
+
+  const smoothY = useSpring(y, { stiffness: 100, damping: 20 });
+  const smoothScale = useSpring(scale, { stiffness: 100, damping: 20 });
+  const smoothRotate = useSpring(rotate, { stiffness: 100, damping: 20 });
+
+  return (
+    <motion.div
+      style={{ y: smoothY, scale: smoothScale, rotate: smoothRotate }}
+      className="absolute top-[200px] right-[-300px] w-1/2 h-full hidden md:block pointer-events-none z-0"
+    >
+      <Image
+        src="/about-illustration.svg"
+        alt="Animated background"
+        className="w-48 h-48 object-contain"
+        width={100}
+        height={100}
+      />
+    </motion.div>
+  );
+};
 
 const About = () => {
   const [counts, setCounts] = useState(stats.map(() => 0));
@@ -72,10 +143,18 @@ const About = () => {
   }, []);
 
   return (
-    <section id="about" className="max-w-6xl mx-auto py-20 px-6 text-gray-800">
+    <section
+      id="about"
+      className="relative max-w-6xl mx-auto py-20 px-6 text-gray-800 overflow-hidden"
+    >
+      <div className="relative w-full h-full">
+        {/* Scroll-animated background image */}
+        <AnimatedImage />
+      </div>
+
       {/* Title */}
       <motion.h2
-        className="text-4xl font-bold mb-12 text-center"
+        className="text-4xl font-bold mb-12 text-center relative z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -83,8 +162,8 @@ const About = () => {
         About Me
       </motion.h2>
 
-      {/* LinkedIn-style Vertical Stepper */}
-      <div className="relative border-l-4 border-orange-400 pl-10 space-y-12">
+      {/* Vertical Stepper */}
+      <div className="border-l-4 border-orange-400 pl-10 space-y-12 relative z-10">
         {milestones.map((item, i) => (
           <motion.div
             key={i}
@@ -111,7 +190,7 @@ const About = () => {
 
       {/* Stats */}
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-16 text-center"
+        className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-16 text-center relative z-10"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -126,38 +205,40 @@ const About = () => {
       </motion.div>
 
       {/* Fun Facts Flip Cards */}
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-20"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-20 relative z-10">
         {funFacts.map((fact, i) => (
-          <motion.div
-            key={i}
-            whileHover={{ rotateY: 180 }}
-            transition={{ duration: 0.6 }}
-            className="relative h-40 cursor-pointer [perspective:1000px]"
-          >
+          <div key={i} className="relative h-44 cursor-pointer group">
             {/* Front */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-white shadow-lg backface-hidden">
-              <span className="text-4xl">{fact.icon}</span>
-              <p className="mt-2 text-lg font-semibold text-gray-800">
+            <motion.div
+              className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl 
+        bg-gradient-to-tl from-orange-400 to-amber-950 shadow-xl border border-white/20
+        hover:shadow-[0_0_20px_rgba(255,200,100,0.8)] transition-shadow duration-100"
+              whileHover={{ opacity: 0, scale: 1.05 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+            >
+              <div className="text-white text-4xl">{fact.icon}</div>
+              <p className="mt-3 text-lg font-semibold text-white">
                 {fact.title}
               </p>
-            </div>
+            </motion.div>
+
             {/* Back */}
-            <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-orange-500 text-white text-center px-4 [transform:rotateY(180deg)] backface-hidden">
-              <p>{fact.desc}</p>
-            </div>
-          </motion.div>
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center rounded-2xl 
+        bg-gradient-to-tl from-amber-500 to-orange-400 text-black text-center px-4
+        shadow-xl border border-white/20 opacity-0"
+              whileHover={{ opacity: 1, scale: 1.05 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+            >
+              <h3>{fact.desc}</h3>
+            </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </div>
 
       {/* Resume Button with subtle pulse */}
       <motion.div
-        className="mt-16 flex justify-center"
+        className="mt-16 flex justify-center relative z-10"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
