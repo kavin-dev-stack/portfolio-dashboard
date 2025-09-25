@@ -1,123 +1,16 @@
 "use client";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
-import {
-  FaGraduationCap,
-  FaBriefcase,
-  FaRocket,
-  FaDownload,
-  FaDumbbell,
-  FaMusic,
-  FaPaintBrush,
-  FaRobot,
-} from "react-icons/fa";
-
-const milestones = [
-  {
-    date: "June 2021",
-    title: "Graduated in Mechanical Engineering",
-    icon: <FaGraduationCap className="text-orange-500 text-xl" />,
-    description:
-      "Built a foundation in problem-solving & software learning alongside engineering.",
-  },
-  {
-    date: "Oct 2021 – Present",
-    title: "Web Developer at Cognizant",
-    icon: <FaBriefcase className="text-orange-500 text-xl" />,
-    description:
-      "4+ years delivering enterprise apps, building internal tools, and exploring AI-powered solutions.",
-  },
-  {
-    date: "2025",
-    title: "Upskilling & AI Projects",
-    icon: <FaRocket className="text-orange-500 text-xl" />,
-    description:
-      "Currently building AI tools, mastering FastAPI, React, and modern full-stack development.",
-  },
-];
-
-const stats = [
-  { label: "Years Experience", value: 4 },
-  { label: "Enterprise Apps Delivered", value: 3 },
-  { label: "AI Projects", value: 2 },
-];
-
-const funFacts = [
-  {
-    icon: <FaDumbbell className="text-4xl text-white" />,
-    title: "Fitness",
-    desc: "Early riser & disciplined gym-goer",
-  },
-  {
-    icon: <FaMusic className="text-4xl text-white" />,
-    title: "Music",
-    desc: "Coding with lo-fi beats on loop",
-  },
-  {
-    icon: <FaPaintBrush className="text-4xl text-white" />,
-    title: "UI/UX",
-    desc: "Love crafting clean, modern UIs",
-  },
-  {
-    icon: <FaRobot className="text-4xl text-white" />,
-    title: "AI Enthusiast",
-    desc: "Exploring AI-powered apps",
-  },
-];
-
-const AnimatedImage = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll();
-
-  // Get top offset of the section
-  const [offsetTop, setOffsetTop] = useState(500);
-
-  useEffect(() => {
-    if (ref.current) {
-      setOffsetTop(ref.current.offsetTop);
-    }
-  }, [ref]);
-
-  // Animate only when section is visible
-  const y = useTransform(
-    scrollY,
-    [offsetTop - 600, offsetTop + 600],
-    [100, -100]
-  );
-  const scale = useTransform(
-    scrollY,
-    [offsetTop - 600, offsetTop + 600],
-    [1, 1.05]
-  );
-  const rotate = useTransform(
-    scrollY,
-    [offsetTop - 600, offsetTop + 600],
-    [0, 5]
-  );
-
-  const smoothY = useSpring(y, { stiffness: 100, damping: 20 });
-  const smoothScale = useSpring(scale, { stiffness: 100, damping: 20 });
-  const smoothRotate = useSpring(rotate, { stiffness: 100, damping: 20 });
-
-  return (
-    <motion.div
-      style={{ y: smoothY, scale: smoothScale, rotate: smoothRotate }}
-      className="absolute md:top-[825px] md:left-[0] lg:top-[830px] lg:left-[0] w-1/2 h-full hidden md:block pointer-events-none z-0"
-    >
-      <Image
-        src="/gifs/cute-tiger.gif"
-        alt="Animated background"
-        className="w-28 h-28 object-contain"
-        width={100}
-        height={100}
-      />
-    </motion.div>
-  );
-};
+import { milestones, stats, funFacts } from "../data/aboutData";
+import { FaDownload, FaEye } from "react-icons/fa";
+import SpeechBubble from "../util_components/SpeechBubble";
+import React from "react";
+import { HelloTiger } from "../util_components/HelloTiger";
 
 const About = () => {
   const [counts, setCounts] = useState(stats.map(() => 0));
+  const [showToast, setShowToast] = useState(true);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   // Counter animation
   useEffect(() => {
@@ -142,15 +35,44 @@ const About = () => {
     });
   }, []);
 
+  // Show toast only when About section is visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShowToast(true);
+          } else {
+            setShowToast(false);
+          }
+        });
+      },
+      { threshold: 0.5 } // 50% of section must be visible
+    );
+
+    const currentSection = sectionRef.current;
+    if (currentSection) {
+      observer.observe(currentSection);
+    }
+
+    return () => {
+      if (currentSection) {
+        observer.unobserve(currentSection);
+      }
+    };
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="about"
       className="relative max-w-6xl mx-auto py-20 px-6 text-gray-800 overflow-hidden"
     >
-      {/* <div className="relative w-full h-full"> */}
-      {/* Scroll-animated background image */}
-      <AnimatedImage />
-      {/* </div> */}
+      <div className="relative w-full">
+        {/* Scroll-animated background image */}
+        <SpeechBubble message="Hover the cards to flip!" show={showToast} />
+        <HelloTiger />
+      </div>
 
       {/* Title */}
       <motion.h2
@@ -175,7 +97,9 @@ const About = () => {
           >
             {/* Dot + Icon */}
             <div className="absolute -left-15.5 -top-2 flex items-center justify-center w-10 h-10 rounded-full bg-orange-100 shadow">
-              {item.icon}
+              {React.createElement(item.icon, {
+                className: "text-orange-600 w-5 h-5",
+              })}
             </div>
 
             {/* Content */}
@@ -210,6 +134,7 @@ const About = () => {
           <div
             key={i}
             className="relative h-44 [perspective:1000px] cursor-pointer"
+            onMouseEnter={() => setShowToast(false)}
           >
             <motion.div
               className="relative w-full h-full"
@@ -223,7 +148,9 @@ const About = () => {
           bg-gradient-to-br from-orange-400 to-amber-700 shadow-xl border border-white/20
           backface-hidden hover:shadow-[0_0_20px_rgba(255,200,100,0.8)] transition-shadow duration-100"
               >
-                <div className="text-white text-4xl">{fact.icon}</div>
+                <div className="text-white text-4xl">
+                  {React.createElement(fact.icon)}
+                </div>
                 <p className="mt-3 text-lg font-semibold text-white">
                   {fact.title}
                 </p>
@@ -265,7 +192,7 @@ const About = () => {
             ease: "easeInOut",
           }}
         >
-          <FaDownload className="text-lg" />
+          <FaEye className="text-lg" />
           View Resume
         </motion.a>
 
