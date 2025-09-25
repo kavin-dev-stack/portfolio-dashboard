@@ -7,7 +7,7 @@ export default function Skills() {
   const categories = Array.from(new Set(skills.map((s) => s.category)));
 
   return (
-    <section id="skills" className="container py-20 bg-gray-50">
+    <section id="skills" className="container py-20">
       <h2 className="text-4xl font-bold mb-12 text-center">Skills</h2>
 
       <div className="space-y-16">
