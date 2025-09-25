@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 const sections = ["home", "about", "projects", "skills", "contact"];
@@ -51,10 +52,15 @@ export default function Navigation() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex justify-between items-center h-16">
           {/* Logo / Name */}
           <div
-            className="text-2xl font-bold text-amber-400 cursor-pointer"
+            className="text-2xl pt-5 font-bold text-amber-400 cursor-pointer"
             onClick={() => scrollToSection("home")}
           >
-            Kavin
+            <Image
+              src="/kavin-webDev-logo-amber-white.png"
+              alt="Logo"
+              width={80}
+              height={80}
+            />
           </div>
 
           {/* Desktop Links */}
