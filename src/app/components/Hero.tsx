@@ -110,6 +110,14 @@ export default function Hero() {
           </motion.button>
         )}
       </AnimatePresence>
+      {/* Decorative GIF */}
+      <Image
+        src="/gifs/cat-movement.gif"
+        alt="Rocket"
+        className="absolute md:-bottom-8.5 right-2 -bottom-7 w-20 md:w-31.5 opacity-70"
+        width={128}
+        height={128}
+      />
     </section>
   );
 }

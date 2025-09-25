@@ -71,7 +71,7 @@ const AnimatedImage = () => {
   const { scrollY } = useScroll();
 
   // Get top offset of the section
-  const [offsetTop, setOffsetTop] = useState(800);
+  const [offsetTop, setOffsetTop] = useState(500);
 
   useEffect(() => {
     if (ref.current) {
@@ -103,12 +103,12 @@ const AnimatedImage = () => {
   return (
     <motion.div
       style={{ y: smoothY, scale: smoothScale, rotate: smoothRotate }}
-      className="absolute top-[200px] right-[-300px] w-1/2 h-full hidden md:block pointer-events-none z-0"
+      className="absolute md:top-[825px] md:left-[0] lg:top-[830px] lg:left-[0] w-1/2 h-full hidden md:block pointer-events-none z-0"
     >
       <Image
-        src="/about-illustration.svg"
+        src="/gifs/cute-tiger.gif"
         alt="Animated background"
-        className="w-48 h-48 object-contain"
+        className="w-28 h-28 object-contain"
         width={100}
         height={100}
       />
@@ -147,10 +147,10 @@ const About = () => {
       id="about"
       className="relative max-w-6xl mx-auto py-20 px-6 text-gray-800 overflow-hidden"
     >
-      <div className="relative w-full h-full">
-        {/* Scroll-animated background image */}
-        <AnimatedImage />
-      </div>
+      {/* <div className="relative w-full h-full"> */}
+      {/* Scroll-animated background image */}
+      <AnimatedImage />
+      {/* </div> */}
 
       {/* Title */}
       <motion.h2
@@ -244,23 +244,42 @@ const About = () => {
         ))}
       </div>
 
-      {/* Resume Button with subtle pulse */}
+      {/* Resume Buttons */}
       <motion.div
-        className="mt-16 flex justify-center relative z-10"
+        className="mt-16 flex flex-col sm:flex-row gap-8 justify-center relative z-10"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
+        {/* View Resume */}
         <motion.a
-          href="/resume.pdf"
-          download
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-amber-500 text-black font-semibold rounded-lg shadow-lg transition-transform duration-300 hover:scale-110 hover:shadow-xl"
-          animate={{ scale: [1, 1.05, 1] }}
+          href="/Kavin_Balamurugan_resume_WebDev.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-amber-600 text-black font-semibold rounded-lg shadow-lg transition-transform duration-300 hover:scale-110 hover:shadow-xl"
+          animate={{ scale: [1, 1.05, 1.2] }}
           transition={{
             duration: 2,
             repeat: Infinity,
             ease: "easeInOut",
+          }}
+        >
+          <FaDownload className="text-lg" />
+          View Resume
+        </motion.a>
+
+        {/* Download Resume */}
+        <motion.a
+          href="/Kavin_Balamurugan_resume_WebDev.pdf"
+          download
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg shadow-lg transition-transform duration-300 hover:scale-110 hover:shadow-xl"
+          animate={{ scale: [1, 1.05, 1.2] }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.5,
           }}
         >
           <FaDownload className="text-lg" />
