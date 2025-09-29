@@ -70,29 +70,40 @@ export default function Hero() {
       </div>
 
       {/* Right: Image */}
-      <div className="flex-1 flex justify-center mt-10 md:mt-0 relative">
+      <div className="flex-1 flex justify-center items-center mt-10 md:mt-0 relative overflow-visible">
+        {/* Background Circle */}
         <motion.div
-          className="absolute bg-amber-300 rounded-full shadow-2xl z-0 w-80.5 h-80.5 md:w-90 md:h-90 md:top-6 top-9.5 flex items-center justify-center"
+          className="absolute bg-amber-300 rounded-full shadow-2xl z-0 
+               w-[min(90vw,250px)] h-[min(90vw,250px)]
+               md:w-[min(80vw,300px)] md:h-[min(80vw,300px)]
+               lg:w-[min(70vw,380px)] lg:h-[min(70vw,380px)]"
           initial={{ scale: 0.75, opacity: 0 }}
           animate={{ scale: [0.5, 1, 1], opacity: 1 }}
           transition={{ duration: 3, ease: "easeInOut", delay: 0.2 }}
           style={{
             background:
-              "conic-gradient(from 180deg, #fbbf24, #f59e0b, #fbbf24)", // Amber gradient
+              "conic-gradient(from 180deg, #fbbf24, #f59e0b, #fbbf24)",
           }}
         ></motion.div>
+
+        {/* Image Container - Overflowing */}
         <MotionWrapper
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
+          className="relative z-10 
+               w-[min(95vw,250px)] h-[min(95vw,270px)]
+               md:w-[min(85vw,300px)] md:h-[min(85vw,320px)]
+               lg:w-[min(75vw,380px)] lg:h-[min(75vw,400px)]
+               -translate-y-2.25"
         >
           <Image
             src="/profile-img.png"
             alt="Kavin Balamurugan"
-            width={350}
-            height={350}
+            fill
             priority
-            className="rounded-full bg-transparent z-10 relative"
+            className="rounded-full object-contain"
+            sizes="(max-width: 768px) 95vw, (max-width: 1024px) 85vw, 75vw"
           />
         </MotionWrapper>
       </div>
