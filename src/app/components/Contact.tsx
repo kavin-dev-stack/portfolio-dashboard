@@ -32,28 +32,52 @@ export default function Contact() {
   const handleFocus = (fieldName: string) => setFocusedField(fieldName);
   const handleBlur = () => setFocusedField(null);
 
+  const isFormValid = () => {
+    return (
+      formData.name.trim() !== "" &&
+      formData.email.trim() !== "" &&
+      formData.message.trim() !== "" &&
+      formData.email.includes("@")
+    ); // Basic email validation
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmissionStatus("loading");
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSubmissionStatus("success");
-      setFormData({ name: "", email: "", message: "" });
+      const response = await fetch("https://formspree.io/f/xrbypdbl", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmissionStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setSubmissionStatus("error");
+      }
     } catch {
       setSubmissionStatus("error");
     }
   };
 
   const socialLinks = [
-    { icon: FaEnvelope, href: "mailto:kavin@example.com", label: "Email" },
+    {
+      icon: FaEnvelope,
+      href: "mailto:kavinsnextmove@gmail.com",
+      label: "Email",
+    },
     {
       icon: FaLinkedin,
-      href: "https://linkedin.com/in/your-profile",
+      href: "https://www.linkedin.com/in/vakbkavin/",
       label: "LinkedIn",
     },
     {
       icon: FaGithub,
-      href: "https://github.com/your-profile",
+      href: "https://github.com/kavin-dev-stack",
       label: "GitHub",
     },
   ];
@@ -273,12 +297,20 @@ export default function Contact() {
               {/* Submit Button */}
               <motion.button
                 type="submit"
-                disabled={submissionStatus === "loading"}
+                disabled={submissionStatus === "loading" || !isFormValid()}
                 whileHover={{
-                  scale: submissionStatus !== "loading" ? 1.02 : 1,
+                  scale:
+                    submissionStatus !== "loading" && isFormValid() ? 1.02 : 1,
                 }}
-                whileTap={{ scale: submissionStatus !== "loading" ? 0.98 : 1 }}
-                className="w-full px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none group relative overflow-hidden"
+                whileTap={{
+                  scale:
+                    submissionStatus !== "loading" && isFormValid() ? 0.98 : 1,
+                }}
+                className={`w-full px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 relative overflow-hidden ${
+                  submissionStatus === "loading" || !isFormValid()
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 cursor-pointer"
+                }`}
               >
                 <div className="relative z-10 flex items-center justify-center gap-3">
                   {submissionStatus === "loading" ? (
@@ -288,12 +320,18 @@ export default function Contact() {
                     </>
                   ) : (
                     <>
-                      <FaPaperPlane className="text-lg group-hover:translate-x-1 transition-transform duration-300" />
+                      <FaPaperPlane
+                        className={`text-lg transition-transform duration-300 ${
+                          isFormValid() ? "group-hover:translate-x-1" : ""
+                        }`}
+                      />
                       Send Message
                     </>
                   )}
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                {isFormValid() && submissionStatus !== "loading" && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                )}
               </motion.button>
 
               {/* Status Messages */}
