@@ -24,29 +24,28 @@ export default function ProjectCard({
     <MotionWrapper
       whileHover={{ scale: 1.05, y: -5 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-xl shadow-lg overflow-hidden flex flex-col h-full transition duration-300
-  ${
-    type === "personal"
-      ? "bg-gradient-to-br from-amber-50 to-red-50 hover:shadow-lg hover:shadow-orange-200/70"
-      : "bg-gradient-to-br from-red-50 to-amber-50 border border-gray-200 hover:shadow-lg hover:shadow-blue-200/70"
-  }`}
+      className="rounded-xl overflow-hidden flex flex-col h-full 
+                 transition duration-300 shadow-xl border border-white/20
+                 bg-gradient-to-tl from-gray-200 to-gray-300 
+                 dark:from-gray-800 dark:to-gray-900"
     >
       {/* Image / Carousel */}
       {project.images && <Carousel images={project.images} />}
 
-      <div className="p-6 flex-1 flex flex-col">
+      <div className="p-6 flex-1 flex flex-col text-black dark:text-white/80 transition-colors duration-300">
+        {/* Title */}
         <h3
-          className={`text-2xl font-semibold mb-2 ${
-            type === "personal" ? "text-orange-600" : "text-gray-900"
+          className={`text-2xl font-semibold mb-2 transition-colors duration-300 ${
+            type === "personal"
+              ? "text-amber-800 dark:text-amber-300"
+              : "text-gray-900 dark:text-white"
           }`}
         >
           {project.name}
         </h3>
-        <p
-          className={`flex-1 ${
-            type === "personal" ? "text-gray-700" : "text-gray-600"
-          }`}
-        >
+
+        {/* Description */}
+        <p className="flex-1 text-gray-800 dark:text-gray-300 transition-colors duration-300">
           {project.description}
         </p>
 
@@ -55,11 +54,12 @@ export default function ProjectCard({
           {project.tech.map((tech, i) => (
             <span
               key={i}
-              className={`px-3 py-1 text-sm rounded-full ${
-                type === "personal"
-                  ? "bg-gradient-to-r from-orange-400 to-pink-500 text-white"
-                  : "bg-blue-100 text-blue-700"
-              }`}
+              className={`px-3 py-1 text-sm rounded-full transition-colors duration-300
+                ${
+                  type === "personal"
+                    ? "bg-gradient-to-r from-purple-200 to-amber-200 text-gray-900 dark:from-amber-400 dark:to-orange-600 dark:text-white"
+                    : "bg-blue-100 text-blue-700 dark:bg-blue-600 dark:text-white"
+                }`}
             >
               {tech}
             </span>
@@ -73,7 +73,11 @@ export default function ProjectCard({
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
+              className="px-4 py-2 rounded-lg font-medium shadow-md 
+                         bg-gradient-to-r from-purple-100 to-amber-400 
+                         text-black dark:text-white/80 
+                         dark:from-amber-400 dark:to-orange-600 
+                         hover:scale-105 transform transition-all duration-300"
             >
               Live Demo
             </a>
@@ -83,7 +87,10 @@ export default function ProjectCard({
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 bg-gray-800 text-white text-sm rounded-lg hover:bg-gray-900 transition"
+              className="px-4 py-2 rounded-lg font-medium shadow-md 
+                         bg-gray-800 text-white hover:bg-gray-900 
+                         dark:bg-gray-700 dark:hover:bg-gray-600 
+                         transition-all duration-300"
             >
               GitHub
             </a>

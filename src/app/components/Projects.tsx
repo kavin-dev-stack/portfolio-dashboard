@@ -43,11 +43,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className={`py-20 transition duration-500 ${
-        activeTab === "personal"
-          ? "bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50"
-          : "bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50"
-      }`}
+      className={`py-20 transition duration-500 dark:text-white/80 bg-gradient-to-r from-gray-200 to-orange-300 dark:from-black dark:to-orange-600`}
     >
       {/* Title */}
       <h2 className="text-4xl font-bold mb-12 text-center">
@@ -60,17 +56,17 @@ export default function Projects() {
           <button
             key={tab}
             onClick={() => setActiveTab(tab as "personal" | "work")}
-            className={`relative px-4 py-2 font-semibold text-lg transition-colors ${
+            className={`relative px-4 py-2 font-semibold text-lg transition-colors cursor-pointer ${
               activeTab === tab
-                ? "text-orange-600"
-                : "text-gray-600 hover:text-gray-800"
+                ? "text-purple-700 dark:text-orange-600 hover:text-gray-800  dark:hover:text-gray-200"
+                : "text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
             }`}
           >
             {tab === "personal" ? "Personal" : "Work"}
             {activeTab === tab && (
               <motion.div
                 layoutId="tab-underline"
-                className="absolute left-0 right-0 -bottom-1 h-[3px] bg-gradient-to-r from-orange-500 to-red-500 rounded-full"
+                className="absolute left-0 right-0 -bottom-1 h-[3px] bg-gradient-to-tr from-purple-400 to-amber-500 dark:from-orange-500 dark:to-red-500 rounded-full"
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
               />
             )}

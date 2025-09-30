@@ -22,6 +22,7 @@ export interface Skill {
   icon: IconType;
   color: string; // text color
   bg: string; // background color
+  ring: string; // hover glow color
   category: string;
 }
 
@@ -32,6 +33,7 @@ export const skills: Skill[] = [
     icon: SiAngular,
     color: "text-red-600",
     bg: "bg-red-100",
+    ring: "ring-red-500",
     category: "Frontend",
   },
   {
@@ -39,6 +41,7 @@ export const skills: Skill[] = [
     icon: SiReact,
     color: "text-blue-600",
     bg: "bg-blue-100",
+    ring: "ring-blue-500",
     category: "Frontend",
   },
   {
@@ -46,6 +49,7 @@ export const skills: Skill[] = [
     icon: SiNextdotjs,
     color: "text-black",
     bg: "bg-gray-200",
+    ring: "ring-gray-400",
     category: "Frontend",
   },
   {
@@ -53,6 +57,7 @@ export const skills: Skill[] = [
     icon: SiTypescript,
     color: "text-blue-700",
     bg: "bg-blue-100",
+    ring: "ring-blue-600",
     category: "Frontend",
   },
   {
@@ -60,6 +65,7 @@ export const skills: Skill[] = [
     icon: SiJavascript,
     color: "text-yellow-600",
     bg: "bg-yellow-100",
+    ring: "ring-yellow-500",
     category: "Frontend",
   },
   {
@@ -67,6 +73,7 @@ export const skills: Skill[] = [
     icon: SiTailwindcss,
     color: "text-cyan-600",
     bg: "bg-cyan-100",
+    ring: "ring-cyan-500",
     category: "Frontend",
   },
 
@@ -74,8 +81,9 @@ export const skills: Skill[] = [
   {
     name: "Express.js",
     icon: SiExpress,
-    color: "text-gray-800",
+    color: "text-gray-500",
     bg: "bg-gray-200",
+    ring: "ring-gray-500",
     category: "Backend",
   },
   {
@@ -83,6 +91,7 @@ export const skills: Skill[] = [
     icon: SiPython,
     color: "text-green-600",
     bg: "bg-green-100",
+    ring: "ring-green-500",
     category: "Backend",
   },
   {
@@ -90,6 +99,7 @@ export const skills: Skill[] = [
     icon: SiDotnet,
     color: "text-purple-700",
     bg: "bg-purple-100",
+    ring: "ring-purple-500",
     category: "Backend",
   },
 
@@ -99,6 +109,7 @@ export const skills: Skill[] = [
     icon: SiMongodb,
     color: "text-green-700",
     bg: "bg-green-100",
+    ring: "ring-green-600",
     category: "Database",
   },
   {
@@ -106,6 +117,7 @@ export const skills: Skill[] = [
     icon: VscAzure,
     color: "text-blue-700",
     bg: "bg-blue-100",
+    ring: "ring-blue-500",
     category: "Database",
   },
 
@@ -115,6 +127,7 @@ export const skills: Skill[] = [
     icon: SiDocker,
     color: "text-blue-500",
     bg: "bg-blue-100",
+    ring: "ring-blue-400",
     category: "Tools",
   },
   {
@@ -122,6 +135,7 @@ export const skills: Skill[] = [
     icon: SiAdobe,
     color: "text-red-600",
     bg: "bg-red-100",
+    ring: "ring-red-500",
     category: "Tools",
   },
   {
@@ -129,6 +143,7 @@ export const skills: Skill[] = [
     icon: SiWebpack,
     color: "text-blue-600",
     bg: "bg-blue-100",
+    ring: "ring-blue-500",
     category: "Tools",
   },
   {
@@ -136,6 +151,7 @@ export const skills: Skill[] = [
     icon: SiChartdotjs,
     color: "text-pink-600",
     bg: "bg-pink-100",
+    ring: "ring-pink-500",
     category: "Tools",
   },
 ];

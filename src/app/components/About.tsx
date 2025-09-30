@@ -66,7 +66,7 @@ const About = () => {
     <section
       ref={sectionRef}
       id="about"
-      className="relative max-w-6xl mx-auto py-20 px-6 text-gray-800 overflow-hidden"
+      className="relative max-w-6xl mx-auto py-20 px-6 text-gray-800 dark:text-white overflow-hidden"
     >
       <div className="relative w-full">
         {/* Scroll-animated background image */}
@@ -85,7 +85,7 @@ const About = () => {
       </motion.h2>
 
       {/* Vertical Stepper */}
-      <div className="border-l-4 border-orange-400 pl-10 space-y-12 relative z-10">
+      <div className="border-l-4 border-orange-200 dark:border-orange-400 pl-10 space-y-12 relative z-10">
         {milestones.map((item, i) => (
           <motion.div
             key={i}
@@ -96,18 +96,22 @@ const About = () => {
             transition={{ duration: 0.6, delay: i * 0.2 }}
           >
             {/* Dot + Icon */}
-            <div className="absolute -left-15.5 -top-2 flex items-center justify-center w-10 h-10 rounded-full bg-orange-100 shadow">
+            <div className="absolute -left-15.5 -top-2 flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 dark:bg-orange-100 shadow">
               {React.createElement(item.icon, {
-                className: "text-orange-600 w-5 h-5",
+                className: "text-black dark:text-orange-600 w-5 h-5",
               })}
             </div>
 
             {/* Content */}
-            <p className="text-sm text-gray-500">{item.date}</p>
-            <h3 className="text-xl font-semibold text-gray-900">
+            <p className="text-sm text-gray-500 dark:text-white/80">
+              {item.date}
+            </p>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white/80">
               {item.title}
             </h3>
-            <p className="text-gray-600 mt-1">{item.description}</p>
+            <p className="text-gray-600 dark:text-white/80 mt-1">
+              {item.description}
+            </p>
           </motion.div>
         ))}
       </div>
@@ -122,8 +126,10 @@ const About = () => {
       >
         {stats.map((stat, i) => (
           <div key={i} className="space-y-2">
-            <p className="text-4xl font-bold text-orange-600">{counts[i]}+</p>
-            <p className="text-gray-700">{stat.label}</p>
+            <p className="text-4xl font-bold text-purple-400 dark:text-orange-600">
+              {counts[i]}+
+            </p>
+            <p className="text-gray-700 dark:text-white/80">{stat.label}</p>
           </div>
         ))}
       </motion.div>
@@ -145,13 +151,13 @@ const About = () => {
               {/* Front */}
               <div
                 className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl 
-          bg-gradient-to-br from-orange-400 to-amber-700 shadow-xl border border-white/20
+          bg-gradient-to-br from-purple-100 to-amber-400 dark:from-orange-400 dark:to-amber-700 shadow-xl border border-white/20
           backface-hidden hover:shadow-[0_0_20px_rgba(255,200,100,0.8)] transition-shadow duration-100"
               >
-                <div className="text-white text-4xl">
+                <div className="dark:text-white/90 text-4xl">
                   {React.createElement(fact.icon)}
                 </div>
-                <p className="mt-3 text-lg font-semibold text-white">
+                <p className="mt-3 text-lg font-semibold dark:text-white/90">
                   {fact.title}
                 </p>
               </div>
@@ -159,7 +165,7 @@ const About = () => {
               {/* Back */}
               <div
                 className="absolute inset-0 flex items-center justify-center rounded-2xl 
-          bg-gradient-to-br from-amber-500 to-orange-400 text-center px-4
+          bg-gradient-to-br from-purple-100 to-amber-400 dark:from-amber-500 dark:to-orange-400 text-center px-4
           [transform:rotateY(180deg)] backface-hidden hover:shadow-[0_0_20px_rgba(255,200,100)] transition-shadow duration-100"
               >
                 <div className="[transform:rotateY(360deg)]">
@@ -184,7 +190,10 @@ const About = () => {
           href="/Kavin_Balamurugan_resume_WebDev.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-amber-600 text-black font-semibold rounded-lg shadow-lg transition-transform duration-300 hover:scale-110 hover:shadow-xl"
+          className="inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg 
+                       shadow-lg bg-gradient-to-r from-purple-100 to-amber-400 text-black dark:text-white/90
+                       transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl 
+                       dark:from-amber-400 dark:to-orange-600"
           animate={{ scale: [1, 1.05, 1.2] }}
           transition={{
             duration: 2,
@@ -200,7 +209,10 @@ const About = () => {
         <motion.a
           href="/Kavin_Balamurugan_resume_WebDev.pdf"
           download
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg shadow-lg transition-transform duration-300 hover:scale-110 hover:shadow-xl"
+          className="inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg 
+                       shadow-lg bg-gradient-to-r from-purple-100 to-amber-400 text-black dark:text-white/90
+                       transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl 
+                       dark:from-amber-400 dark:to-orange-600"
           animate={{ scale: [1, 1.05, 1.2] }}
           transition={{
             duration: 2,
