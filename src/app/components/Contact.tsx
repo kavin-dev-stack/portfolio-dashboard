@@ -100,7 +100,10 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative py-20 bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 overflow-hidden"
+      className="relative py-20 
+      bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 
+      dark:from-gray-900 dark:via-gray-950 dark:to-black
+      overflow-hidden transition-colors duration-500"
     >
       {/* Floating Social Nav */}
       <div className="hidden md:flex fixed lg:left-4 right-1 top-1/3 lg:top-3/4 flex-col space-y-4 z-50">
@@ -188,7 +191,7 @@ export default function Contact() {
         </motion.h2>
 
         <motion.p
-          className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto leading-relaxed"
+          className="text-lg text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -204,25 +207,29 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-2xl mx-auto bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
+          className="max-w-2xl mx-auto 
+          bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 
+          dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 dark:border-gray-700"
         >
           <div className="p-8">
+            {/* Header */}
             <div className="flex items-center gap-3 mb-8">
               <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
                 <FaPaperPlane className="text-white text-lg" />
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-gray-800">
+                <h3 className="text-2xl font-semibold text-gray-800 dark:text-white">
                   Send a Message
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400">
                   I&apos;ll get back to you within 24 hours
                 </p>
               </div>
             </div>
 
+            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name Field */}
+              {/* Name */}
               <div className="relative group">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-400 to-amber-400 rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
                 <div className="relative">
@@ -244,12 +251,17 @@ export default function Contact() {
                     onBlur={handleBlur}
                     placeholder="Your full name"
                     required
-                    className="w-full pl-12 pr-4 py-4 bg-gray-50/80 border-0 rounded-xl focus:ring-2 focus:ring-orange-200 focus:bg-white transition-all duration-300 text-gray-900 placeholder-gray-500 shadow-sm"
+                    className="w-full pl-12 pr-4 py-4 
+                    bg-gray-50/80 text-gray-900 placeholder-gray-500 
+                    dark:bg-gray-800/70 dark:text-white dark:placeholder-gray-400 
+                    border-0 rounded-xl shadow-sm
+                    focus:ring-2 focus:ring-orange-200 dark:focus:ring-purple-500 
+                    focus:bg-white dark:focus:bg-gray-800 transition-all duration-300"
                   />
                 </div>
               </div>
 
-              {/* Email Field */}
+              {/* Email */}
               <div className="relative group">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-400 to-amber-400 rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
                 <div className="relative">
@@ -271,12 +283,17 @@ export default function Contact() {
                     onBlur={handleBlur}
                     placeholder="your.email@example.com"
                     required
-                    className="w-full pl-12 pr-4 py-4 bg-gray-50/80 border-0 rounded-xl focus:ring-2 focus:ring-orange-200 focus:bg-white transition-all duration-300 text-gray-900 placeholder-gray-500 shadow-sm"
+                    className="w-full pl-12 pr-4 py-4 
+                    bg-gray-50/80 text-gray-900 placeholder-gray-500 
+                    dark:bg-gray-800/70 dark:text-white dark:placeholder-gray-400
+                    border-0 rounded-xl shadow-sm
+                    focus:ring-2 focus:ring-orange-200 dark:focus:ring-purple-500 
+                    focus:bg-white dark:focus:bg-gray-800 transition-all duration-300"
                   />
                 </div>
               </div>
 
-              {/* Message Field */}
+              {/* Message */}
               <div className="relative group">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-400 to-amber-400 rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
                 <div className="relative">
@@ -289,7 +306,12 @@ export default function Contact() {
                     placeholder="Tell me about your project or idea..."
                     rows={5}
                     required
-                    className="w-full px-4 py-4 bg-gray-50/80 border-0 rounded-xl focus:ring-2 focus:ring-orange-200 focus:bg-white transition-all duration-300 text-gray-900 placeholder-gray-500 shadow-sm resize-none"
+                    className="w-full px-4 py-4 
+                    bg-gray-50/80 text-gray-900 placeholder-gray-500 
+                    dark:bg-gray-800/70 dark:text-white dark:placeholder-gray-400
+                    border-0 rounded-xl shadow-sm resize-none
+                    focus:ring-2 focus:ring-orange-200 dark:focus:ring-purple-500 
+                    focus:bg-white dark:focus:bg-gray-800 transition-all duration-300"
                   />
                 </div>
               </div>
@@ -306,10 +328,10 @@ export default function Contact() {
                   scale:
                     submissionStatus !== "loading" && isFormValid() ? 0.98 : 1,
                 }}
-                className={`w-full px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 relative overflow-hidden ${
+                className={`group w-full px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 relative overflow-hidden ${
                   submissionStatus === "loading" || !isFormValid()
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 cursor-pointer"
+                    : "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 dark:from-purple-500 dark:to-indigo-600 dark:hover:from-purple-600 dark:hover:to-indigo-700"
                 }`}
               >
                 <div className="relative z-10 flex items-center justify-center gap-3">
@@ -353,7 +375,7 @@ export default function Contact() {
                 className="overflow-hidden"
               >
                 {submissionStatus === "success" && (
-                  <div className="p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 flex items-center gap-3">
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 flex items-center gap-3 dark:bg-green-900/30 dark:border-green-700 dark:text-green-300">
                     <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                       <span className="text-white text-sm">✓</span>
                     </div>
@@ -366,7 +388,7 @@ export default function Contact() {
                   </div>
                 )}
                 {submissionStatus === "error" && (
-                  <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-center gap-3">
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-center gap-3 dark:bg-red-900/30 dark:border-red-700 dark:text-red-300">
                     <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
                       <span className="text-white text-sm">!</span>
                     </div>

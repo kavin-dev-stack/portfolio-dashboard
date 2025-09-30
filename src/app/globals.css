@@ -4,7 +4,7 @@
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @layer theme, base, components, utilities;
-
+@custom-variant dark (&:where(.dark, .dark *));
 :root {
   /* Typography */
   --text-xs: 0.75rem; /* 12px */
@@ -68,6 +68,10 @@ html {
   a {
     color: var(--color-blue-600);
     text-decoration: none;
+  }
+
+  button {
+    cursor: pointer;
   }
 
   ul,
