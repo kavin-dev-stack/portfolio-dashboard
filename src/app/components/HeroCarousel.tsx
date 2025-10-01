@@ -25,7 +25,7 @@ export default function HeroCarousel() {
       <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-purple-100 dark:from-black to-white/0"></div>
 
       {/* Fade overlay on the right */}
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-purple-400 md:from-gray-300 dark:from-purple-900 to-white/0"></div>
+      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-indigo-300 md:from-indigo-200 dark:from-purple-900 md:dark:from-indigo-950 to-white/0"></div>
     </div>
   );
 }
