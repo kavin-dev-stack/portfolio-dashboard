@@ -33,8 +33,8 @@ export default function Hero() {
     <section
       id="home"
       className="min-h-screen pt-20 md:pt-15 md:pb-10 lg:pt-0 flex flex-col md:flex-row items-center justify-center 
-                 bg-gradient-to-r from-gray-200 to-orange-300 dark:from-black dark:to-orange-600 
-                text-black dark:text-white/80 px-8 relative transition-colors duration-300"
+                 bg-gradient-to-r from-purple-100 to-indigo-300 dark:from-black dark:to-purple-900 
+                 text-black dark:text-white/80 px-8 relative transition-colors duration-300"
     >
       {/* Left: Text + CTA */}
       <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left space-y-6">
@@ -45,7 +45,7 @@ export default function Hero() {
         >
           <h1 className="text-5xl md:text-6xl font-bold">
             Hi, I&apos;m{" "}
-            <span className="text-amber-800 dark:text-amber-300 transition-colors duration-300">
+            <span className="text-purple-800 dark:text-purple-300 transition-colors duration-300">
               Kavin Balamurugan
             </span>
           </h1>
@@ -69,9 +69,9 @@ export default function Hero() {
           <button
             onClick={() => handleScroll("projects")}
             className="relative inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg 
-                       shadow-lg bg-gradient-to-r from-purple-100 to-amber-400 text-black dark:text-white/80
+                       shadow-lg bg-gradient-to-r from-purple-400 to-indigo-500 text-white
                        transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl 
-                       dark:from-amber-400 dark:to-orange-600"
+                       dark:from-purple-500 dark:to-indigo-700"
           >
             See My Work
           </button>
@@ -87,8 +87,8 @@ export default function Hero() {
                      md:w-[min(80vw,300px)] md:h-[min(80vw,300px)]
                      lg:w-[min(70vw,380px)] lg:h-[min(70vw,380px)]
                      transition-colors duration-300
-                     bg-[conic-gradient(from_180deg,#c084fc,#facc15,#c084fc)]
-                     dark:bg-[conic-gradient(from_180deg,#f5b802,#e33119,#f5b802)]"
+                     bg-[conic-gradient(from_180deg,#c084fc,#a855f7,#6366f1)]
+                     dark:bg-[conic-gradient(from_180deg,#a855f7,#7c3aed,#4f46e5)]"
           initial={{ scale: 0.75, opacity: 0 }}
           animate={{ scale: [0.5, 1, 1], opacity: 1 }}
           transition={{ duration: 3, ease: "easeInOut", delay: 0.2 }}
@@ -125,7 +125,7 @@ export default function Hero() {
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.4 }}
             className="absolute bottom-3 md:bottom-6 left-1/2 -translate-x-1/2 
-                       flex flex-col items-center text-amber-500 dark:text-amber-300 
+                       flex flex-col items-center text-purple-600 dark:text-purple-400 
                        transition-colors duration-300"
           >
             <FaChevronDown className="text-2xl animate-bounce" />

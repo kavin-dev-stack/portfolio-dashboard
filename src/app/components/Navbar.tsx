@@ -94,13 +94,13 @@ export default function Navigation() {
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
-                className="relative font-medium text-black dark:text-white hover:text-amber-800  dark:hover:text-amber-400 transition-colors"
+                className="relative font-medium text-black dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
               >
                 {section.charAt(0).toUpperCase() + section.slice(1)}
                 {active === section && (
                   <motion.span
                     layoutId="underline"
-                    className="absolute left-0 -bottom-1 h-0.5 bg-amber-900 dark:bg-amber-400 w-full rounded"
+                    className="absolute left-0 -bottom-1 h-0.5 bg-purple-600 dark:bg-purple-400 w-full rounded"
                   />
                 )}
               </button>
@@ -109,7 +109,7 @@ export default function Navigation() {
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
-              className="relative w-14 h-8 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="relative w-14 h-8 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
               aria-label="Toggle dark mode"
             >
               <motion.div
@@ -120,7 +120,7 @@ export default function Navigation() {
                 {darkMode ? (
                   <Moon size={16} className="text-gray-800" />
                 ) : (
-                  <Sun size={16} className="text-yellow-500" />
+                  <Sun size={16} className="text-purple-500" />
                 )}
               </motion.div>
             </button>
@@ -130,7 +130,7 @@ export default function Navigation() {
           <div className="md:hidden">
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="text-2xl text-amber-400"
+              className="text-2xl text-black/90 dark:text-purple-400"
             >
               {mobileOpen ? <FaTimes /> : <FaBars />}
             </button>
@@ -145,14 +145,14 @@ export default function Navigation() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="md:hidden bg-black/95 backdrop-blur-md flex flex-col items-center py-8 space-y-6 text-white"
+              className="md:hidden backdrop-blur-md flex flex-col items-center py-8 space-y-6 text-black bg-white/80 dark:bg-black/95 dark:text-white "
             >
               {sections.map((section, i) => (
                 <motion.button
                   key={section}
                   onClick={() => scrollToSection(section)}
                   className={`font-medium text-lg ${
-                    active === section ? "text-amber-400" : ""
+                    active === section ? "text-purple-400" : ""
                   }`}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -165,7 +165,7 @@ export default function Navigation() {
               {/* Dark Mode Toggle (mobile) */}
               <button
                 onClick={toggleDarkMode}
-                className="relative w-14 h-8 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                className="relative w-14 h-8 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                 aria-label="Toggle dark mode"
               >
                 <motion.div
@@ -176,7 +176,7 @@ export default function Navigation() {
                   {darkMode ? (
                     <Moon size={16} className="text-gray-800" />
                   ) : (
-                    <Sun size={16} className="text-yellow-500" />
+                    <Sun size={16} className="text-purple-500" />
                   )}
                 </motion.div>
               </button>

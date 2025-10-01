@@ -37,7 +37,7 @@ export default function ProjectCard({
         <h3
           className={`text-2xl font-semibold mb-2 transition-colors duration-300 ${
             type === "personal"
-              ? "text-amber-800 dark:text-amber-300"
+              ? "text-purple-800 dark:text-purple-300"
               : "text-gray-900 dark:text-white"
           }`}
         >
@@ -57,7 +57,7 @@ export default function ProjectCard({
               className={`px-3 py-1 text-sm rounded-full transition-colors duration-300
                 ${
                   type === "personal"
-                    ? "bg-gradient-to-r from-purple-200 to-amber-200 text-gray-900 dark:from-amber-400 dark:to-orange-600 dark:text-white"
+                    ? "bg-gradient-to-r from-purple-200 to-indigo-200 text-gray-900 dark:from-purple-400 dark:to-indigo-600 dark:text-white"
                     : "bg-blue-100 text-blue-700 dark:bg-blue-600 dark:text-white"
                 }`}
             >
@@ -74,9 +74,9 @@ export default function ProjectCard({
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-lg font-medium shadow-md 
-                         bg-gradient-to-r from-purple-100 to-amber-400 
-                         text-black dark:text-white/80 
-                         dark:from-amber-400 dark:to-orange-600 
+                         bg-gradient-to-r from-purple-400 to-indigo-500 
+                         text-white 
+                         dark:from-purple-500 dark:to-indigo-600 
                          hover:scale-105 transform transition-all duration-300"
             >
               Live Demo
