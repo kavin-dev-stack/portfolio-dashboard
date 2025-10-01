@@ -101,7 +101,7 @@ export default function Contact() {
     <section
       id="contact"
       className="relative py-20 
-      bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 
+      bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50 
       dark:from-gray-900 dark:via-gray-950 dark:to-black
       overflow-hidden transition-colors duration-500"
     >
@@ -116,7 +116,7 @@ export default function Contact() {
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.2, x: 6 }}
-              className="relative group flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-white/20 text-gray-700 hover:text-orange-600 transition-all duration-300"
+              className="relative group flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-white/20 text-gray-700 hover:text-purple-600 transition-all duration-300"
             >
               <Icon className="text-xl" />
               <span className="absolute left-full ml-3 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-lg">
@@ -139,7 +139,7 @@ export default function Contact() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.15, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="w-11 h-11 flex items-center justify-center rounded-xl bg-gradient-to-br from-white to-gray-50 text-gray-700 hover:text-orange-600 transition-all duration-200 shadow-sm border border-white/50"
+              className="w-11 h-11 flex items-center justify-center rounded-xl bg-gradient-to-br from-white to-gray-50 text-gray-700 hover:text-purple-600 transition-all duration-200 shadow-sm border border-white/50"
               title={link.label}
             >
               <Icon className="text-lg" />
@@ -159,7 +159,7 @@ export default function Contact() {
           {dotPositions.map((position, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 bg-gradient-to-r from-orange-400 to-amber-400 rounded-full"
+              className="absolute w-2 h-2 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full"
               style={{
                 top: position.top,
                 left: position.left,
@@ -181,7 +181,7 @@ export default function Contact() {
 
       <div className="container mx-auto px-6 relative z-10">
         <motion.h2
-          className="text-5xl font-bold mb-4 text-center bg-gradient-to-r from-gray-800 via-orange-600 to-amber-600 bg-clip-text text-transparent"
+          className="text-5xl font-bold mb-4 text-center bg-gradient-to-r from-gray-800 via-purple-600 to-indigo-600 bg-clip-text text-transparent"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -214,7 +214,7 @@ export default function Contact() {
           <div className="p-8">
             {/* Header */}
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
                 <FaPaperPlane className="text-white text-lg" />
               </div>
               <div>
@@ -231,13 +231,13 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name */}
               <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-400 to-amber-400 rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
                 <div className="relative">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
                     <FaUser
                       className={`text-lg transition-colors duration-300 ${
                         focusedField === "name"
-                          ? "text-orange-500"
+                          ? "text-purple-500"
                           : "text-gray-400"
                       }`}
                     />
@@ -255,7 +255,7 @@ export default function Contact() {
                     bg-gray-50/80 text-gray-900 placeholder-gray-500 
                     dark:bg-gray-800/70 dark:text-white dark:placeholder-gray-400 
                     border-0 rounded-xl shadow-sm
-                    focus:ring-2 focus:ring-orange-200 dark:focus:ring-purple-500 
+                    focus:ring-2 focus:ring-purple-200 dark:focus:ring-purple-500 
                     focus:bg-white dark:focus:bg-gray-800 transition-all duration-300"
                   />
                 </div>
@@ -263,13 +263,13 @@ export default function Contact() {
 
               {/* Email */}
               <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-400 to-amber-400 rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
                 <div className="relative">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
                     <FaEnvelopeOpen
                       className={`text-lg transition-colors duration-300 ${
                         focusedField === "email"
-                          ? "text-orange-500"
+                          ? "text-purple-500"
                           : "text-gray-400"
                       }`}
                     />
@@ -287,7 +287,7 @@ export default function Contact() {
                     bg-gray-50/80 text-gray-900 placeholder-gray-500 
                     dark:bg-gray-800/70 dark:text-white dark:placeholder-gray-400
                     border-0 rounded-xl shadow-sm
-                    focus:ring-2 focus:ring-orange-200 dark:focus:ring-purple-500 
+                    focus:ring-2 focus:ring-purple-200 dark:focus:ring-purple-500 
                     focus:bg-white dark:focus:bg-gray-800 transition-all duration-300"
                   />
                 </div>
@@ -295,7 +295,7 @@ export default function Contact() {
 
               {/* Message */}
               <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-400 to-amber-400 rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-2xl blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
                 <div className="relative">
                   <textarea
                     name="message"
@@ -310,7 +310,7 @@ export default function Contact() {
                     bg-gray-50/80 text-gray-900 placeholder-gray-500 
                     dark:bg-gray-800/70 dark:text-white dark:placeholder-gray-400
                     border-0 rounded-xl shadow-sm resize-none
-                    focus:ring-2 focus:ring-orange-200 dark:focus:ring-purple-500 
+                    focus:ring-2 focus:ring-purple-200 dark:focus:ring-purple-500 
                     focus:bg-white dark:focus:bg-gray-800 transition-all duration-300"
                   />
                 </div>
@@ -331,7 +331,7 @@ export default function Contact() {
                 className={`group w-full px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 relative overflow-hidden ${
                   submissionStatus === "loading" || !isFormValid()
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 dark:from-purple-500 dark:to-indigo-600 dark:hover:from-purple-600 dark:hover:to-indigo-700"
+                    : "bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 dark:from-purple-500 dark:to-indigo-600 dark:hover:from-purple-600 dark:hover:to-indigo-700"
                 }`}
               >
                 <div className="relative z-10 flex items-center justify-center gap-3">

@@ -39,14 +39,14 @@ export const HelloTiger = () => {
   return (
     <motion.div
       style={{ y: smoothY, scale: smoothScale, rotate: smoothRotate }}
-      className="absolute md:top-[715px] md:left-[0] lg:top-[722px] lg:left-[0] w-1/2 h-full hidden md:block pointer-events-none z-0"
+      className="absolute md:top-[715px] md:left-[0] lg:top-[674px] lg:left-[-40] w-1/2 h-full hidden md:block pointer-events-none z-0"
     >
       <Image
-        src="/gifs/cute-tiger.gif"
+        src="/gifs/Cute Robot.gif"
         alt="Animated background"
-        className="w-28 h-28 object-contain"
-        width={100}
-        height={100}
+        className="w-50 h-50 object-contain"
+        width={300}
+        height={300}
       />
     </motion.div>
   );

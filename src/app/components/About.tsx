@@ -10,6 +10,7 @@ import { HelloTiger } from "../util_components/HelloTiger";
 const About = () => {
   const [counts, setCounts] = useState(stats.map(() => 0));
   const [showToast, setShowToast] = useState(true);
+  const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Counter animation
@@ -47,7 +48,7 @@ const About = () => {
           }
         });
       },
-      { threshold: 0.5 } // 50% of section must be visible
+      { threshold: 0.5 }
     );
 
     const currentSection = sectionRef.current;
@@ -62,6 +63,13 @@ const About = () => {
     };
   }, []);
 
+  const handleCardFlip = (index: number) => {
+    setFlippedCards((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+    setShowToast(false);
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -69,8 +77,7 @@ const About = () => {
       className="relative max-w-6xl mx-auto py-20 px-6 text-gray-800 dark:text-white overflow-hidden"
     >
       <div className="relative w-full">
-        {/* Scroll-animated background image */}
-        <SpeechBubble message="Hover the cards to flip!" show={showToast} />
+        <SpeechBubble message="Tap the cards to flip!" show={showToast} />
         <HelloTiger />
       </div>
 
@@ -85,7 +92,7 @@ const About = () => {
       </motion.h2>
 
       {/* Vertical Stepper */}
-      <div className="border-l-4 border-orange-200 dark:border-orange-400 pl-10 space-y-12 relative z-10">
+      <div className="border-l-4 border-purple-200 dark:border-purple-400 pl-10 space-y-12 relative z-10">
         {milestones.map((item, i) => (
           <motion.div
             key={i}
@@ -96,9 +103,9 @@ const About = () => {
             transition={{ duration: 0.6, delay: i * 0.2 }}
           >
             {/* Dot + Icon */}
-            <div className="absolute -left-15.5 -top-2 flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 dark:bg-orange-100 shadow">
+            <div className="absolute -left-15.5 -top-2 flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-100 shadow">
               {React.createElement(item.icon, {
-                className: "text-black dark:text-orange-600 w-5 h-5",
+                className: "text-black dark:text-purple-600 w-5 h-5",
               })}
             </div>
 
@@ -126,7 +133,7 @@ const About = () => {
       >
         {stats.map((stat, i) => (
           <div key={i} className="space-y-2">
-            <p className="text-4xl font-bold text-purple-400 dark:text-orange-600">
+            <p className="text-4xl font-bold text-purple-400 dark:text-purple-600">
               {counts[i]}+
             </p>
             <p className="text-gray-700 dark:text-white/80">{stat.label}</p>
@@ -140,36 +147,44 @@ const About = () => {
           <div
             key={i}
             className="relative h-44 [perspective:1000px] cursor-pointer"
-            onMouseEnter={() => setShowToast(false)}
+            onClick={() => handleCardFlip(i)}
           >
             <motion.div
-              className="relative w-full h-full"
-              whileHover={{ rotateY: 180, scale: 1.05 }}
+              className="relative w-full h-full [transform-style:preserve-3d]"
+              animate={{
+                rotateY: flippedCards.includes(i) ? 180 : 0,
+                scale: flippedCards.includes(i) ? 1.05 : 1,
+              }}
               transition={{ duration: 0.7, ease: "easeInOut" }}
-              style={{ transformStyle: "preserve-3d" }}
             >
               {/* Front */}
               <div
                 className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl 
-          bg-gradient-to-br from-purple-100 to-amber-400 dark:from-orange-400 dark:to-amber-700 shadow-xl border border-white/20
-          backface-hidden hover:shadow-[0_0_20px_rgba(255,200,100,0.8)] transition-shadow duration-100"
+          bg-gradient-to-br from-purple-100 to-indigo-300 dark:from-purple-400 dark:to-indigo-700 shadow-xl border border-white/20
+          [backface-visibility:hidden] [transform:rotateY(0deg)]"
               >
-                <div className="dark:text-white/90 text-4xl">
+                <div className="dark:text-white/90 text-4xl [transform:translateZ(10px)]">
                   {React.createElement(fact.icon)}
                 </div>
-                <p className="mt-3 text-lg font-semibold dark:text-white/90">
+                <p className="mt-3 text-lg font-semibold dark:text-white/90 [transform:translateZ(10px)]">
                   {fact.title}
+                </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 md:hidden [transform:translateZ(10px)]">
+                  Tap to flip
                 </p>
               </div>
 
               {/* Back */}
               <div
                 className="absolute inset-0 flex items-center justify-center rounded-2xl 
-          bg-gradient-to-br from-purple-100 to-amber-400 dark:from-amber-500 dark:to-orange-400 text-center px-4
-          [transform:rotateY(180deg)] backface-hidden hover:shadow-[0_0_20px_rgba(255,200,100)] transition-shadow duration-100"
+          bg-gradient-to-br from-purple-100 to-indigo-300 dark:from-indigo-500 dark:to-purple-400 text-center px-4
+          [backface-visibility:hidden] [transform:rotateY(180deg)]"
               >
-                <div className="[transform:rotateY(360deg)]">
-                  <h3>{fact.desc}</h3>
+                <div className="[transform:rotateY(360deg) translateZ(10px)]">
+                  <h3 className="text-gray-900 dark:text-white">{fact.desc}</h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 md:hidden">
+                    Tap to flip back
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -191,9 +206,9 @@ const About = () => {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg 
-                       shadow-lg bg-gradient-to-r from-purple-100 to-amber-400 text-black dark:text-white/90
+                       shadow-lg bg-gradient-to-r from-purple-400 to-indigo-500 text-white
                        transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl 
-                       dark:from-amber-400 dark:to-orange-600"
+                       dark:from-purple-500 dark:to-indigo-700"
           animate={{ scale: [1, 1.05, 1.2] }}
           transition={{
             duration: 2,
@@ -210,9 +225,9 @@ const About = () => {
           href="/Kavin_Balamurugan_resume_WebDev.pdf"
           download
           className="inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg 
-                       shadow-lg bg-gradient-to-r from-purple-100 to-amber-400 text-black dark:text-white/90
+                       shadow-lg bg-gradient-to-r from-purple-400 to-indigo-500 text-white
                        transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl 
-                       dark:from-amber-400 dark:to-orange-600"
+                       dark:from-purple-500 dark:to-indigo-700"
           animate={{ scale: [1, 1.05, 1.2] }}
           transition={{
             duration: 2,
