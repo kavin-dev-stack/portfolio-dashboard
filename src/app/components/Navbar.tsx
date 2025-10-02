@@ -76,11 +76,7 @@ export default function Navigation() {
             onClick={() => scrollToSection("home")}
           >
             <Image
-              src={
-                darkMode
-                  ? "/kavin-webDev-logo-amber-white.png"
-                  : "/kavin-webDev-logo-amber-black.png"
-              }
+              src="/kavin-webDev-logo-purple.png"
               alt="Logo"
               width={70}
               height={70}
