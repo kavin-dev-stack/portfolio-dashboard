@@ -1,62 +1,27 @@
 import {
   FaGraduationCap,
   FaBriefcase,
-  FaRocket,
-  FaDumbbell,
-  FaMusic,
-  FaPaintBrush,
-  FaRobot,
 } from "react-icons/fa";
 
 export const milestones = [
   {
-    date: "June 2021",
-    title: "Graduated in Mechanical Engineering",
+    date: "2017 – 2021",
+    title: "Bachelor of Engineering – Mechanical Engineering",
     icon: FaGraduationCap,
-    description:
-      "Built a foundation in problem-solving & software learning alongside engineering.",
+    description: "Kongu Engineering College",
   },
   {
-    date: "Oct 2021 – Present",
-    title: "Web Developer at Cognizant",
+    date: "October 2021 – December 2023",
+    title: "Programmer Analyst (Trainee → Analyst) at Cognizant",
     icon: FaBriefcase,
     description:
-      "4+ years delivering enterprise apps, building internal tools, and exploring AI-powered solutions.",
+      "Delivered enterprise frontend components and Angular proof-of-concept applications, and contributed to a design-system migration.",
   },
   {
-    date: "2025",
-    title: "Upskilling & AI Projects",
-    icon: FaRocket,
+    date: "January 2024 – Present",
+    title: "Associate – Frontend & AI Engineer at Cognizant",
+    icon: FaBriefcase,
     description:
-      "Currently building AI tools, mastering FastAPI, React, and modern full-stack development.",
-  },
-];
-
-export const stats = [
-  { label: "Years Experience", value: 4 },
-  { label: "Enterprise Apps Delivered", value: 3 },
-  { label: "AI Projects", value: 2 },
-];
-
-export const funFacts = [
-  {
-    icon: FaDumbbell,
-    title: "Fitness",
-    desc: "Early riser & disciplined gym-goer",
-  },
-  {
-    icon: FaMusic,
-    title: "Music",
-    desc: "Coding with lo-fi beats on loop",
-  },
-  {
-    icon: FaPaintBrush,
-    title: "UI/UX",
-    desc: "Love crafting clean, modern UIs",
-  },
-  {
-    icon: FaRobot,
-    title: "AI Enthusiast",
-    desc: "Exploring AI-powered apps",
+      "Developing enterprise frontend, backend, and AI application features across Angular, ASP.NET Core, Python, and cloud AI platforms.",
   },
 ];

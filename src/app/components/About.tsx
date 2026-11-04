@@ -1,247 +1,91 @@
 "use client";
+
 import { motion } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
-import { milestones, stats, funFacts } from "../data/aboutData";
 import { FaDownload, FaEye } from "react-icons/fa";
-import SpeechBubble from "../util_components/SpeechBubble";
-import React from "react";
+import { milestones } from "../data/aboutData";
 import { HelloTiger } from "../util_components/HelloTiger";
 
-const About = () => {
-  const [counts, setCounts] = useState(stats.map(() => 0));
-  const [showToast, setShowToast] = useState(true);
-  const [flippedCards, setFlippedCards] = useState<number[]>([]);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  // Counter animation
-  useEffect(() => {
-    stats.forEach((stat, i) => {
-      let start = 0;
-      const end = stat.value;
-      const duration = 1000;
-      const step = Math.ceil(end / (duration / 16));
-
-      const counter = setInterval(() => {
-        start += step;
-        if (start >= end) {
-          start = end;
-          clearInterval(counter);
-        }
-        setCounts((prev) => {
-          const newCounts = [...prev];
-          newCounts[i] = start;
-          return newCounts;
-        });
-      }, 16);
-    });
-  }, []);
-
-  // Show toast only when About section is visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShowToast(true);
-          } else {
-            setShowToast(false);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    const currentSection = sectionRef.current;
-    if (currentSection) {
-      observer.observe(currentSection);
-    }
-
-    return () => {
-      if (currentSection) {
-        observer.unobserve(currentSection);
-      }
-    };
-  }, []);
-
-  const handleCardFlip = (index: number) => {
-    setFlippedCards((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
-    setShowToast(false);
-  };
-
+export default function About() {
   return (
     <section
-      ref={sectionRef}
-      id="about"
-      className="relative max-w-6xl mx-auto py-20 px-6 text-gray-800 dark:text-white overflow-hidden"
+      id="experience"
+      tabIndex={-1}
+      aria-labelledby="experience-heading"
+      className="relative scroll-mt-20 overflow-hidden bg-white px-5 py-20 text-gray-900 dark:bg-gray-950 dark:text-white sm:px-8"
     >
-      <div className="relative w-full">
-        <SpeechBubble message="Tap the cards to flip!" show={showToast} />
+      <div
+        className="pointer-events-none absolute bottom-4 left-3 z-0 hidden h-40 w-40 opacity-80 xl:block 2xl:h-48 2xl:w-48"
+        aria-hidden="true"
+      >
         <HelloTiger />
       </div>
 
-      {/* Title */}
-      <motion.h2
-        className="text-4xl font-bold mb-12 text-center relative z-10"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        About Me
-      </motion.h2>
+      <div className="relative z-10 mx-auto max-w-4xl">
+        <p className="mb-3 text-center text-sm font-semibold uppercase tracking-[0.18em] text-purple-800 dark:text-purple-300">
+          Experience
+        </p>
+        <h2
+          id="experience-heading"
+          className="mb-4 text-center text-3xl font-bold sm:text-4xl"
+        >
+          Career progression
+        </h2>
+        <p className="mx-auto mb-12 max-w-2xl text-center text-gray-700 dark:text-gray-300">
+          I grew from enterprise frontend delivery into full-stack and AI
+          application engineering at Cognizant.
+        </p>
 
-      {/* Vertical Stepper */}
-      <div className="border-l-4 border-purple-200 dark:border-purple-400 pl-10 space-y-12 relative z-10">
-        {milestones.map((item, i) => (
-          <motion.div
-            key={i}
-            className="relative"
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: i * 0.2 }}
-          >
-            {/* Dot + Icon */}
-            <div className="absolute -left-15.5 -top-2 flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-100 shadow">
-              {React.createElement(item.icon, {
-                className: "text-black dark:text-purple-600 w-5 h-5",
-              })}
-            </div>
-
-            {/* Content */}
-            <p className="text-sm text-gray-500 dark:text-white/80">
-              {item.date}
-            </p>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white/80">
-              {item.title}
-            </h3>
-            <p className="text-gray-600 dark:text-white/80 mt-1">
-              {item.description}
-            </p>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Stats */}
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-16 text-center relative z-10"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        {stats.map((stat, i) => (
-          <div key={i} className="space-y-2">
-            <p className="text-4xl font-bold text-purple-400 dark:text-purple-600">
-              {counts[i]}+
-            </p>
-            <p className="text-gray-700 dark:text-white/80">{stat.label}</p>
-          </div>
-        ))}
-      </motion.div>
-
-      {/* Fun Facts Flip Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-20 relative z-10">
-        {funFacts.map((fact, i) => (
-          <div
-            key={i}
-            className="relative h-44 [perspective:1000px] cursor-pointer"
-            onClick={() => handleCardFlip(i)}
-          >
-            <motion.div
-              className="relative w-full h-full [transform-style:preserve-3d]"
-              animate={{
-                rotateY: flippedCards.includes(i) ? 180 : 0,
-                scale: flippedCards.includes(i) ? 1.05 : 1,
-              }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-            >
-              {/* Front */}
-              <div
-                className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl 
-          bg-gradient-to-br from-purple-100 to-indigo-300 dark:from-purple-400 dark:to-indigo-700 shadow-xl border border-white/20
-          [backface-visibility:hidden] [transform:rotateY(0deg)]"
+        <ol className="career-timeline relative space-y-8">
+          {milestones.slice(1).map((item) => {
+            const Icon = item.icon;
+            return (
+              <motion.li
+                key={item.title}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={{ duration: 0.35 }}
+                className="career-timeline__entry relative"
               >
-                <div className="dark:text-white/90 text-4xl [transform:translateZ(10px)]">
-                  {React.createElement(fact.icon)}
-                </div>
-                <p className="mt-3 text-lg font-semibold dark:text-white/90 [transform:translateZ(10px)]">
-                  {fact.title}
-                </p>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 md:hidden [transform:translateZ(10px)]">
-                  Tap to flip
-                </p>
-              </div>
-
-              {/* Back */}
-              <div
-                className="absolute inset-0 flex items-center justify-center rounded-2xl 
-          bg-gradient-to-br from-purple-100 to-indigo-300 dark:from-indigo-500 dark:to-purple-400 text-center px-4
-          [backface-visibility:hidden] [transform:rotateY(180deg)]"
-              >
-                <div className="[transform:rotateY(360deg) translateZ(10px)]">
-                  <h3 className="text-gray-900 dark:text-white">{fact.desc}</h3>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 md:hidden">
-                    Tap to flip back
+                <span className="career-timeline__badge absolute left-0 top-6 flex items-center justify-center rounded-full border-4 border-white bg-purple-100 text-purple-800 dark:border-gray-950 dark:bg-purple-900 dark:text-purple-200">
+                  <Icon aria-hidden="true" className="h-4 w-4" />
+                </span>
+                <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:p-7">
+                  <p className="mb-2 text-sm font-semibold text-purple-800 dark:text-purple-300">
+                    {item.date}
+                  </p>
+                  <h3 className="text-xl font-semibold leading-snug">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 leading-relaxed text-gray-700 dark:text-gray-300">
+                    {item.description}
                   </p>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-        ))}
+              </motion.li>
+            );
+          })}
+        </ol>
+
+        <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+          <a
+            href="/Kavin_Balamurugan_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 font-semibold text-white shadow-md transition hover:from-purple-700 hover:to-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-purple-800 dark:focus-visible:outline-purple-200"
+          >
+            <FaEye aria-hidden="true" />
+            View résumé
+          </a>
+          <a
+            href="/Kavin_Balamurugan_Resume.pdf"
+            download
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-purple-800/30 bg-white px-6 py-3 font-semibold text-purple-950 transition hover:bg-purple-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-purple-800 dark:border-purple-200/30 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800 dark:focus-visible:outline-purple-200"
+          >
+            <FaDownload aria-hidden="true" />
+            Download résumé
+          </a>
+        </div>
       </div>
-
-      {/* Resume Buttons */}
-      <motion.div
-        className="mt-16 flex flex-col sm:flex-row gap-8 justify-center relative z-10"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        {/* View Resume */}
-        <motion.a
-          href="/Kavin_Balamurugan_resume_WebDev.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg 
-                       shadow-lg bg-gradient-to-r from-purple-400 to-indigo-500 text-white
-                       transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl 
-                       dark:from-purple-500 dark:to-indigo-700"
-          animate={{ scale: [1, 1.05, 1.2] }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <FaEye className="text-lg" />
-          View Resume
-        </motion.a>
-
-        {/* Download Resume */}
-        <motion.a
-          href="/Kavin_Balamurugan_resume_WebDev.pdf"
-          download
-          className="inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg 
-                       shadow-lg bg-gradient-to-r from-purple-400 to-indigo-500 text-white
-                       transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl 
-                       dark:from-purple-500 dark:to-indigo-700"
-          animate={{ scale: [1, 1.05, 1.2] }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 0.5,
-          }}
-        >
-          <FaDownload className="text-lg" />
-          Download Resume
-        </motion.a>
-      </motion.div>
     </section>
   );
-};
-
-export default About;
+}

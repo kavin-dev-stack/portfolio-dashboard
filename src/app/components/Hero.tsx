@@ -1,145 +1,133 @@
 "use client";
 
-import MotionWrapper from "./MotionWrapper";
-import HeroCarousel from "./HeroCarousel";
 import Image from "next/image";
-import { FaChevronDown } from "react-icons/fa";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import HeroCarousel from "./HeroCarousel";
 
 export default function Hero() {
-  const [showIndicator, setShowIndicator] = useState(true);
+  const [auroraDismissed, setAuroraDismissed] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > window.innerHeight * 0.3) {
-        setShowIndicator(false);
-      } else {
-        setShowIndicator(true);
+    const dismissAurora = () => {
+      if (window.scrollY > 24) {
+        setAuroraDismissed(true);
+        window.removeEventListener("scroll", dismissAurora);
       }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
-  const handleScroll = (id: string) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+    window.addEventListener("scroll", dismissAurora, { passive: true });
+    dismissAurora();
+    return () => window.removeEventListener("scroll", dismissAurora);
+  }, []);
 
   return (
     <section
       id="home"
-      className="min-h-screen pt-20 md:pt-15 md:pb-10 lg:pt-0 flex flex-col md:flex-row items-center justify-center 
-                 bg-gradient-to-r from-purple-100 to-indigo-300 dark:from-black dark:to-purple-900 
-                 text-black dark:text-white/80 px-8 relative transition-colors duration-300"
+      tabIndex={-1}
+      aria-labelledby="hero-heading"
+      className="relative isolate flex min-h-[calc(100svh-4rem)] scroll-mt-16 items-center overflow-hidden bg-gradient-to-br from-purple-100 via-violet-100 to-indigo-300 px-5 pb-16 pt-24 text-gray-950 dark:from-gray-950 dark:via-purple-950 dark:to-indigo-950 dark:text-white sm:px-8 sm:py-16 lg:pt-20 lg:pb-11.5"
     >
-      {/* Left: Text + CTA */}
-      <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left space-y-6">
-        <MotionWrapper
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <h1 className="text-5xl md:text-6xl font-bold">
+      <div
+        aria-hidden="true"
+        className={`hero-aurora ${auroraDismissed ? "hero-aurora--dismissed" : ""}`}
+      />
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+        <div className="flex min-w-0 flex-col items-center text-center lg:items-start lg:text-left">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-purple-900 dark:text-purple-200">
+            Software Engineer
+          </p>
+          <h1
+            id="hero-heading"
+            className="max-w-3xl text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl"
+          >
             Hi, I&apos;m{" "}
-            <span className="text-purple-800 dark:text-purple-300 transition-colors duration-300">
+            <span className="text-purple-800 dark:text-purple-300">
               Kavin Balamurugan
             </span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-800 dark:text-white transition-colors duration-300">
-            Web Developer | UI Specialist | Full Stack
+          <p className="mt-5 text-xl font-semibold text-gray-800 dark:text-gray-100 sm:text-2xl">
+            Full-Stack &amp; AI Applications
           </p>
-          <HeroCarousel />
-          <p className="text-lg max-w-lg text-gray-700 dark:text-gray-300 transition-colors duration-300">
-            Delivering high-performance, scalable frontends and AI-powered
-            applications with 4 years of enterprise experience.
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-gray-700 dark:text-gray-300 sm:text-lg">
+            I build enterprise applications across frontend, backend, and AI —
+            from microfrontend platforms and APIs to retrieval-augmented
+            applications.
           </p>
-        </MotionWrapper>
 
-        {/* CTA Button */}
-        <MotionWrapper
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="flex flex-col items-center md:items-start space-y-3"
-        >
-          <button
-            onClick={() => handleScroll("projects")}
-            className="relative inline-flex items-center justify-center px-8 py-3 font-semibold rounded-lg 
-                       shadow-lg bg-gradient-to-r from-purple-400 to-indigo-500 text-white
-                       transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl 
-                       dark:from-purple-500 dark:to-indigo-700"
-          >
-            See My Work
-          </button>
-        </MotionWrapper>
-      </div>
+          <div className="mt-5 w-full max-w-2xl">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+              Selected technologies
+            </p>
+            <HeroCarousel />
+          </div>
 
-      {/* Right: Profile Image with Gradient Circle */}
-      <div className="flex-1 flex justify-center items-center mt-10 md:mt-0 relative overflow-visible">
-        {/* Background Circle */}
-        <motion.div
-          className="absolute rounded-full shadow-2xl z-0 
-                     w-[min(90vw,250px)] h-[min(90vw,250px)]
-                     md:w-[min(80vw,300px)] md:h-[min(80vw,300px)]
-                     lg:w-[min(70vw,380px)] lg:h-[min(70vw,380px)]
-                     transition-colors duration-300
-                     bg-[conic-gradient(from_180deg,#c084fc,#a855f7,#6366f1)]
-                     dark:bg-[conic-gradient(from_180deg,#a855f7,#7c3aed,#4f46e5)]"
-          initial={{ scale: 0.75, opacity: 0 }}
-          animate={{ scale: [0.5, 1, 1], opacity: 1 }}
-          transition={{ duration: 3, ease: "easeInOut", delay: 0.2 }}
-        />
+          <div className="mt-7 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row lg:justify-start">
+            <Link
+              href="#projects"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 font-semibold text-white shadow-lg transition hover:from-purple-700 hover:to-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-purple-800 dark:focus-visible:outline-purple-200"
+            >
+              Explore selected work
+            </Link>
+            <Link
+              href="/Kavin_Balamurugan_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-purple-800/30 bg-white/70 px-6 py-3 font-semibold text-purple-950 transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-purple-800 dark:border-purple-200/30 dark:bg-gray-900/60 dark:text-white dark:hover:bg-gray-800 dark:focus-visible:outline-purple-200"
+            >
+              View résumé
+            </Link>
+          </div>
+        </div>
 
-        {/* Profile Image */}
-        <MotionWrapper
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="relative z-10 
-                     w-[min(95vw,250px)] h-[min(95vw,270px)]
-                     md:w-[min(85vw,300px)] md:h-[min(85vw,320px)]
-                     lg:w-[min(75vw,380px)] lg:h-[min(75vw,400px)]
-                     -translate-y-2.25"
-        >
-          <Image
-            src="/profile-img.png"
-            alt="Kavin Balamurugan"
-            fill
-            priority
-            className="rounded-full object-contain"
-            sizes="(max-width: 768px) 95vw, (max-width: 1024px) 85vw, 75vw"
+        <div className="relative mx-auto flex w-full max-w-lg items-center justify-center lg:max-w-none">
+          <div className="relative z-10 aspect-square w-[min(82vw,27rem)]">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.45 }}
+              className="absolute inset-0"
+            >
+              <div className="absolute inset-0 overflow-hidden rounded-full">
+                <Image
+                  src="/profile-img.png"
+                  alt="Kavin Balamurugan"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 82vw, (max-width: 1024px) 42vw, 432px"
+                  className="hero-portrait-image"
+                />
+              </div>
+              <div className="hero-portrait-head-breakout" aria-hidden="true">
+                <Image
+                  src="/profile-img.png"
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 82vw, (max-width: 1024px) 42vw, 432px"
+                  className="hero-portrait-image"
+                />
+              </div>
+            </motion.div>
+          </div>
+          <motion.div
+            aria-hidden="true"
+            className="pointer-events-none absolute aspect-square w-[min(82vw,27rem)] rounded-full bg-[conic-gradient(from_180deg,#c084fc,#a855f7,#6366f1)] shadow-2xl dark:bg-[conic-gradient(from_180deg,#a855f7,#7c3aed,#4f46e5)]"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: [0.75, 1, 1], opacity: 1 }}
+            transition={{ duration: 1.2, ease: "easeInOut", delay: 0.2 }}
           />
-        </MotionWrapper>
+        </div>
       </div>
 
-      {/* Floating Scroll Indicator */}
-      <AnimatePresence>
-        {showIndicator && (
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.4 }}
-            className="absolute bottom-3 md:bottom-6 left-1/2 -translate-x-1/2 
-                       flex flex-col items-center text-purple-600 dark:text-purple-400 
-                       transition-colors duration-300"
-          >
-            <FaChevronDown className="text-2xl animate-bounce" />
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      {/* Decorative GIF */}
       <Image
         src="/gifs/cat-movement.gif"
-        alt="Cat animation"
-        className="absolute md:-bottom-8.5 right-2 -bottom-7 w-20 md:w-31.5 opacity-70"
+        alt=""
+        aria-hidden="true"
+        className="hero-cat pointer-events-none absolute bottom-[-11px] right-2 z-10 w-14 opacity-50 sm:bottom-[-11px] sm:right-5 sm:w-20"
         width={128}
         height={128}
+        unoptimized
       />
     </section>
   );

@@ -1,65 +1,67 @@
-"use client";
-
 import { skills } from "../data/skillsData";
-import MotionWrapper from "../components/MotionWrapper";
+
+const categoryOrder = [
+  "Frontend & UI Engineering",
+  "Backend & API Engineering",
+  "AI & Generative AI",
+  "Cloud & Platform Engineering",
+  "Architecture & Security",
+  "Development Tools",
+];
 
 export default function Skills() {
-  const categories = Array.from(new Set(skills.map((s) => s.category)));
-
   return (
-    <section id="skills" className="container py-20">
-      <h2 className="text-4xl font-bold mb-12 text-center">Skills</h2>
+    <section
+      id="skills"
+      tabIndex={-1}
+      aria-labelledby="skills-heading"
+      className="scroll-mt-20 bg-gray-50 py-20 dark:bg-gray-950"
+    >
+      <div className="container mx-auto px-4 sm:px-6">
+        <p className="mb-3 text-center text-sm font-semibold uppercase tracking-[0.18em] text-purple-800 dark:text-purple-300">
+          Engineering capabilities
+        </p>
+        <h2
+          id="skills-heading"
+          className="mb-10 text-center text-3xl font-bold text-gray-950 sm:text-4xl dark:text-white"
+        >
+          Skills & technologies
+        </h2>
 
-      <div className="space-y-16">
-        {categories.map((cat, catIndex) => (
-          <div key={cat}>
-            {/* Category Header */}
-            <MotionWrapper
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: catIndex * 0.2 }}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {categoryOrder.map((category) => (
+            <section
+              key={category}
+              aria-labelledby={`skill-${category.replaceAll(" ", "-").replaceAll("&", "and")}`}
+              className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900"
             >
               <h3
-                className="text-2xl font-semibold mb-8 
-                             text-gray-800 dark:text-transparent 
-                             dark:bg-clip-text dark:bg-gradient-to-r 
-                             dark:from-purple-400 dark:to-indigo-400"
+                id={`skill-${category.replaceAll(" ", "-").replaceAll("&", "and")}`}
+                className="mb-5 text-xl font-semibold text-gray-950 dark:text-white"
               >
-                {cat}
+                {category}
               </h3>
-            </MotionWrapper>
-
-            {/* Badges */}
-            <div className="flex flex-wrap gap-4">
-              {skills
-                .filter((s) => s.category === cat)
-                .map((skill, i) => {
-                  const Icon = skill.icon;
-                  return (
-                    <MotionWrapper
-                      key={i}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.3 }}
-                      transition={{ duration: 0.75, delay: i * 0.1 }}
-                      whileHover={{ scale: 1.08 }}
-                      className={`
-                        flex items-center gap-2 px-4 py-2 rounded-full shadow-md hover:shadow-xl transition
-                        ${skill.bg} ${skill.color}
-                        dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 dark:text-white/90
-                        dark:hover:ring-2 dark:hover:ring-offset-1 dark:hover:ring-offset-gray-900 
-                        ${skill.ring}
-                      `}
+              <ul className="flex flex-wrap gap-2.5">
+                {skills
+                  .filter((skill) => skill.category === category)
+                  .map(({ name, icon: Icon, color, bg, ring }) => (
+                    <li
+                      key={name}
+                      className={`skill-pill inline-flex min-h-10 items-center gap-2 rounded-full px-3 py-2 text-sm font-medium ring-1 ring-inset ${bg} ${ring} dark:bg-gray-900/80`}
                     >
-                      <Icon className={`${skill.color}`} size={20} />
-                      <span className="font-medium">{skill.name}</span>
-                    </MotionWrapper>
-                  );
-                })}
-            </div>
-          </div>
-        ))}
+                      <Icon
+                        aria-hidden="true"
+                        className={`shrink-0 ${color} dark:brightness-125`}
+                      />
+                      <span className="text-gray-900 dark:text-gray-100">
+                        {name}
+                      </span>
+                    </li>
+                  ))}
+              </ul>
+            </section>
+          ))}
+        </div>
       </div>
     </section>
   );

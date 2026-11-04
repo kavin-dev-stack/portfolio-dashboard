@@ -1,185 +1,194 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Sun, Moon } from "lucide-react";
 
-const sections = ["home", "about", "projects", "skills", "contact"];
+const sections = [
+  { id: "home", label: "Home" },
+  { id: "projects", label: "Selected Work" },
+  { id: "experience", label: "Experience" },
+  { id: "skills", label: "Skills" },
+  { id: "contact", label: "Contact" },
+];
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("home");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const scrolledRef = useRef(false);
+  const activeRef = useRef("home");
+
+  const navigateFromMobileMenu = (id: string) => {
+    setMobileOpen(false);
+    window.requestAnimationFrame(() => {
+      document.getElementById(id)?.focus({ preventScroll: true });
+    });
+  };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+    let animationFrame = 0;
 
-      const scrollPos = window.scrollY + window.innerHeight / 2;
-      sections.forEach((section) => {
-        const el = document.getElementById(section);
-        if (el) {
-          const offsetTop = el.offsetTop;
-          const offsetHeight = el.offsetHeight;
-          if (scrollPos >= offsetTop && scrollPos < offsetTop + offsetHeight) {
-            setActive(section);
-          }
+    const updateNavigation = () => {
+      const isScrolled = window.scrollY > 24;
+      if (isScrolled !== scrolledRef.current) {
+        scrolledRef.current = isScrolled;
+        setScrolled(isScrolled);
+      }
+      const readingLine = window.scrollY + window.innerHeight * 0.35;
+      let currentSection = sections[0].id;
+
+      for (const section of sections) {
+        const element = document.getElementById(section.id);
+        if (element && element.offsetTop <= readingLine) {
+          currentSection = section.id;
         }
-      });
+      }
 
+      if (currentSection !== activeRef.current) {
+        activeRef.current = currentSection;
+        setActive(currentSection);
+      }
+    };
+
+    const handleScroll = () => {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(updateNavigation);
+    };
+
+    updateNavigation();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const syncTheme = () => {
       setDarkMode(document.documentElement.classList.contains("dark"));
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    syncTheme();
+    window.addEventListener("themeChange", syncTheme);
+    return () => window.removeEventListener("themeChange", syncTheme);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-      setMobileOpen(false);
-    }
-  };
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [mobileOpen]);
 
   const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-
-    if (newDarkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+    const nextThemeIsDark = !darkMode;
+    document.documentElement.classList.toggle("dark", nextThemeIsDark);
+    localStorage.setItem("theme", nextThemeIsDark ? "dark" : "light");
+    setDarkMode(nextThemeIsDark);
     window.dispatchEvent(new Event("themeChange"));
   };
 
   return (
-    <>
-      {/* 🔹 Top Navbar */}
+    <header className="fixed inset-x-0 top-3 z-50 px-3">
       <nav
-        className={`fixed w-full z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-white/90 dark:bg-black/90 backdrop-blur-md shadow-lg"
-            : "bg-transparent"
-        }`}
+        aria-label="Primary navigation"
+        className="relative mx-auto flex min-h-14 max-w-7xl items-center justify-center"
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex justify-between items-center h-16">
-          {/* Logo */}
-          <div
-            className="pt-2 cursor-pointer"
-            onClick={() => scrollToSection("home")}
-          >
-            <Image
-              src="/kavin-webDev-logo-purple.png"
-              alt="Logo"
-              width={70}
-              height={70}
-              priority
-            />
-          </div>
-
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center space-x-6">
-            {sections.map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className="relative font-medium text-black dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+        <div className={`flex items-center rounded-full border px-2 py-1.5 transition-all duration-300 ease-out ${scrolled ? "border-purple-200/80 bg-white/85 shadow-lg backdrop-blur-xl dark:border-purple-300/20 dark:bg-gray-950/85" : "border-transparent bg-transparent shadow-none backdrop-blur-none"}`}>
+          <div className="hidden items-center gap-1 md:flex">
+            {sections.map(({ id, label }) => (
+              <Link
+                key={id}
+                href={`#${id}`}
+                aria-current={active === id ? "location" : undefined}
+                className={`relative inline-flex min-h-10 items-center rounded-full px-3 text-sm font-medium transition-colors hover:bg-purple-100/80 hover:text-purple-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:hover:bg-purple-900/60 dark:hover:text-white dark:focus-visible:outline-purple-200 lg:px-4 ${active === id ? "text-purple-950 dark:text-purple-100" : "text-gray-800 dark:text-gray-100"}`}
               >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-                {active === section && (
-                  <motion.span
-                    layoutId="underline"
-                    className="absolute left-0 -bottom-1 h-0.5 bg-purple-600 dark:bg-purple-400 w-full rounded"
-                  />
+                {label}
+                {active === id && (
+                  <span aria-hidden="true" className="absolute inset-x-3 bottom-1 h-0.5 rounded-full bg-purple-600 dark:bg-purple-300" />
                 )}
-              </button>
+              </Link>
             ))}
-
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="relative w-14 h-8 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
-              aria-label="Toggle dark mode"
-            >
-              <motion.div
-                className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center"
-                animate={{ x: darkMode ? 28 : 2 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                {darkMode ? (
-                  <Moon size={16} className="text-gray-800" />
-                ) : (
-                  <Sun size={16} className="text-purple-500" />
-                )}
-              </motion.div>
-            </button>
+            <span aria-hidden="true" className="mx-1 h-7 w-px bg-gray-300 dark:bg-gray-700" />
+            <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
           </div>
 
-          {/* Mobile Hamburger */}
-          <div className="md:hidden">
+          <div className="flex items-center gap-1 md:hidden">
+            <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="text-2xl text-black/90 dark:text-purple-400"
+              ref={menuButtonRef}
+              type="button"
+              aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-navigation"
+              onClick={() => setMobileOpen((open) => !open)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full text-xl text-gray-900 hover:bg-purple-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:text-white dark:hover:bg-gray-800 dark:focus-visible:outline-purple-200"
             >
-              {mobileOpen ? <FaTimes /> : <FaBars />}
+              {mobileOpen ? <FaTimes aria-hidden="true" /> : <FaBars aria-hidden="true" />}
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden backdrop-blur-md flex flex-col items-center py-8 space-y-6 text-black bg-white/80 dark:bg-black/95 dark:text-white "
-            >
-              {sections.map((section, i) => (
-                <motion.button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className={`font-medium text-lg ${
-                    active === section ? "text-purple-400" : ""
-                  }`}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  {section.charAt(0).toUpperCase() + section.slice(1)}
-                </motion.button>
-              ))}
-
-              {/* Dark Mode Toggle (mobile) */}
-              <button
-                onClick={toggleDarkMode}
-                className="relative w-14 h-8 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
-                aria-label="Toggle dark mode"
-              >
-                <motion.div
-                  className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center"
-                  animate={{ x: darkMode ? 28 : 2 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  {darkMode ? (
-                    <Moon size={16} className="text-gray-800" />
-                  ) : (
-                    <Sun size={16} className="text-purple-500" />
-                  )}
-                </motion.div>
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </nav>
-    </>
+
+      {mobileOpen && (
+        <div
+          id="mobile-navigation"
+          className="absolute left-1/2 top-full mt-2 w-[min(calc(100vw-1.5rem),24rem)] -translate-x-1/2 rounded-3xl border border-purple-200/80 bg-white/95 px-4 py-3 shadow-xl backdrop-blur-xl dark:border-purple-300/20 dark:bg-gray-950/95 md:hidden"
+        >
+          <ul className="mx-auto flex max-w-7xl flex-col gap-1">
+            {sections.map(({ id, label }) => (
+              <li key={id}>
+                <Link
+                  href={`#${id}`}
+                  aria-current={active === id ? "location" : undefined}
+                  onClick={() => navigateFromMobileMenu(id)}
+                  className="flex min-h-11 items-center rounded-lg px-4 font-medium text-gray-900 hover:bg-purple-50 focus-visible:outline-2 focus-visible:outline-purple-700 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus-visible:outline-purple-200"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function ThemeToggle({
+  darkMode,
+  onToggle,
+}: {
+  darkMode: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={darkMode ? "Switch to light theme" : "Switch to dark theme"}
+      aria-pressed={darkMode}
+      onClick={onToggle}
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 bg-white text-purple-800 transition-colors hover:bg-purple-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:border-gray-700 dark:bg-gray-900 dark:text-purple-200 dark:hover:bg-gray-800 dark:focus-visible:outline-purple-200"
+    >
+      {darkMode ? (
+        <Sun aria-hidden="true" size={18} />
+      ) : (
+        <Moon aria-hidden="true" size={18} />
+      )}
+    </button>
   );
 }
