@@ -1,102 +1,58 @@
-"use client";
+import type { Project } from "../data/projectsData";
+import { technologyTone } from "../data/skillsData";
 
-import MotionWrapper from "../components/MotionWrapper";
-import Carousel from "../util_components/Carousel";
-
-interface Project {
-  id: number;
-  name: string;
-  description: string;
-  images?: string[];
-  tech: string[];
-  link?: string;
-  github?: string;
-}
-
-export default function ProjectCard({
-  project,
-  type,
-}: {
-  project: Project;
-  type: "personal" | "work";
-}) {
+export default function ProjectCard({ project }: { project: Project }) {
   return (
-    <MotionWrapper
-      whileHover={{ scale: 1.05, y: -5 }}
-      transition={{ duration: 0.3 }}
-      className="rounded-xl overflow-hidden flex flex-col h-full 
-                 transition duration-300 shadow-xl border border-white/20
-                 bg-gradient-to-tl from-gray-200 to-gray-300 
-                 dark:from-gray-800 dark:to-gray-900"
-    >
-      {/* Image / Carousel */}
-      {project.images && <Carousel images={project.images} />}
-
-      <div className="p-6 flex-1 flex flex-col text-black dark:text-white/80 transition-colors duration-300">
-        {/* Title */}
-        <h3
-          className={`text-2xl font-semibold mb-2 transition-colors duration-300 ${
-            type === "personal"
-              ? "text-purple-800 dark:text-purple-300"
-              : "text-gray-900 dark:text-white"
-          }`}
-        >
-          {project.name}
-        </h3>
-
-        {/* Description */}
-        <p className="flex-1 text-gray-800 dark:text-gray-300 transition-colors duration-300">
-          {project.description}
+    <article className="flex h-full flex-col rounded-2xl border border-purple-200/80 bg-white/85 p-6 shadow-md transition-shadow hover:shadow-xl dark:border-purple-400/20 dark:bg-gray-900/75">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <p className="text-sm font-semibold uppercase tracking-wide text-purple-800 dark:text-purple-300">
+          {project.classification}
         </p>
-
-        {/* Tech Stack */}
-        <div className="flex flex-wrap gap-2 mt-4">
-          {project.tech.map((tech, i) => (
-            <span
-              key={i}
-              className={`px-3 py-1 text-sm rounded-full transition-colors duration-300
-                ${
-                  type === "personal"
-                    ? "bg-gradient-to-r from-purple-200 to-indigo-200 text-gray-900 dark:from-purple-400 dark:to-indigo-600 dark:text-white"
-                    : "bg-blue-100 text-blue-700 dark:bg-blue-600 dark:text-white"
-                }`}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-
-        {/* Links */}
-        <div className="mt-6 flex gap-4">
-          {project.link && (
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 rounded-lg font-medium shadow-md 
-                         bg-gradient-to-r from-purple-400 to-indigo-500 
-                         text-white 
-                         dark:from-purple-500 dark:to-indigo-600 
-                         hover:scale-105 transform transition-all duration-300"
-            >
-              Live Demo
-            </a>
-          )}
-          {project.github && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 rounded-lg font-medium shadow-md 
-                         bg-gray-800 text-white hover:bg-gray-900 
-                         dark:bg-gray-700 dark:hover:bg-gray-600 
-                         transition-all duration-300"
-            >
-              GitHub
-            </a>
-          )}
-        </div>
+        {project.stage && (
+          <span className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-900 dark:border-amber-500/50 dark:bg-amber-950/60 dark:text-amber-200">
+            {project.stage}
+          </span>
+        )}
       </div>
-    </MotionWrapper>
+
+      <h3 className="mb-3 text-2xl font-semibold leading-tight text-gray-950 dark:text-white">
+        {project.name}
+      </h3>
+
+      <p className="mb-5 text-gray-700 dark:text-gray-300">{project.context}</p>
+
+      <div className="space-y-4">
+        <div>
+          <h4 className="mb-1 text-sm font-semibold text-gray-950 dark:text-white">
+            Contribution
+          </h4>
+          <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+            {project.contribution}
+          </p>
+        </div>
+
+        {project.outcome && (
+          <p className="rounded-xl border-l-4 border-purple-500 bg-purple-50 px-4 py-3 text-sm font-medium text-purple-950 dark:bg-purple-950/50 dark:text-purple-100">
+            <span className="font-bold">Outcome: </span>
+            {project.outcome}
+          </p>
+        )}
+      </div>
+
+      <ul
+        aria-label={`Technologies used for ${project.name}`}
+        className="mt-auto flex flex-wrap gap-2 pt-6"
+      >
+        {project.technologies.map(({ name, icon: Icon }) => (
+          <li
+            key={name}
+            className={`technology-pill inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${technologyTone(name)}`}
+          >
+            <Icon aria-hidden="true" className="technology-icon shrink-0" />
+            <span>{name}</span>
+          </li>
+        ))}
+      </ul>
+    </article>
   );
 }

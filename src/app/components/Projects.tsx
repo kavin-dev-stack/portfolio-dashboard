@@ -1,96 +1,123 @@
 "use client";
 
-import { useState } from "react";
-import { personalProjects, workProjects } from "../data/projectsData";
-import ProjectCard from "./ProjectCard";
+import { useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { labProjects, workProjects } from "../data/projectsData";
+import ProjectCard from "./ProjectCard";
+
+const tabs = [
+  { id: "work", label: "Selected Work" },
+  { id: "labs", label: "Labs & POCs" },
+] as const;
+
+type ProjectTab = (typeof tabs)[number]["id"];
 
 export default function Projects() {
-  const [activeTab, setActiveTab] = useState<"personal" | "work">("personal");
+  const [activeTab, setActiveTab] = useState<ProjectTab>("work");
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const projects = activeTab === "labs" ? labProjects : workProjects;
 
-  const projects = activeTab === "personal" ? personalProjects : workProjects;
+  const handleTabKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    currentIndex: number
+  ) => {
+    let nextIndex: number | undefined;
 
-  // Variants for stagger effect
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 },
-    },
-    exit: { opacity: 0 },
-  };
+    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+    if (event.key === "ArrowLeft") nextIndex = (currentIndex + tabs.length - 1) % tabs.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = tabs.length - 1;
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut" as const, // ✅ cast to satisfy TS
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: -20,
-      transition: {
-        duration: 0.3,
-        ease: "easeIn" as const, // ✅
-      },
-    },
+    if (nextIndex !== undefined) {
+      event.preventDefault();
+      const nextTab = tabs[nextIndex];
+      setActiveTab(nextTab.id);
+      tabRefs.current[nextIndex]?.focus();
+    }
   };
 
   return (
     <section
       id="projects"
-      className={`py-20 transition duration-500 dark:text-white/80 bg-gradient-to-r from-gray-200 to-purple-300 dark:from-black dark:to-purple-600`}
+      tabIndex={-1}
+      aria-labelledby="projects-heading"
+      className="scroll-mt-20 bg-gradient-to-r from-gray-100 via-purple-100 to-indigo-200 py-20 dark:from-gray-950 dark:via-gray-900 dark:to-purple-950"
     >
-      {/* Title */}
-      <h2 className="text-4xl font-bold mb-12 text-center">
-        {activeTab === "personal" ? "Personal Projects" : "Work Projects"}
-      </h2>
-
-      {/* Animated Tabs */}
-      <div className="flex justify-center gap-8 mb-10 relative">
-        {["personal", "work"].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab as "personal" | "work")}
-            className={`relative px-4 py-2 font-semibold text-lg transition-colors cursor-pointer ${
-              activeTab === tab
-                ? "text-purple-700 dark:text-purple-400 hover:text-gray-800 dark:hover:text-gray-200"
-                : "text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
-            }`}
-          >
-            {tab === "personal" ? "Personal" : "Work"}
-            {activeTab === tab && (
-              <motion.div
-                layoutId="tab-underline"
-                className="absolute left-0 right-0 -bottom-1 h-[3px] bg-gradient-to-tr from-purple-400 to-indigo-500 dark:from-purple-500 dark:to-indigo-600 rounded-full"
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              />
-            )}
-          </button>
-        ))}
-      </div>
-
-      {/* Animated Cards with stagger */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          variants={containerVariants}
-          initial="hidden"
-          animate="show"
-          exit="exit"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 container"
+      <div className="container mx-auto px-4 sm:px-6">
+        <p className="mb-3 text-center text-sm font-semibold uppercase tracking-[0.18em] text-purple-800 dark:text-purple-300">
+          Selected projects
+        </p>
+        <h2
+          id="projects-heading"
+          className="mb-10 text-center text-3xl font-bold text-gray-950 sm:text-4xl dark:text-white"
         >
-          {projects.map((proj) => (
-            <motion.div key={proj.id} variants={cardVariants}>
-              <ProjectCard project={proj} type={activeTab} />
+          Engineering work, with context
+        </h2>
+
+        <div
+          role="tablist"
+          aria-label="Project collections"
+          className="mb-10 flex justify-center gap-3 sm:gap-6"
+        >
+          {tabs.map((tab, index) => {
+            const selected = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                ref={(element) => {
+                  tabRefs.current[index] = element;
+                }}
+                id={`tab-${tab.id}`}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                aria-controls="projects-panel"
+                tabIndex={selected ? 0 : -1}
+                onClick={() => setActiveTab(tab.id)}
+                onKeyDown={(event) => handleTabKeyDown(event, index)}
+                className={`min-h-11 rounded-full px-5 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-white/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 sm:text-base dark:text-gray-200 dark:hover:bg-gray-800 ${
+                  selected
+                    ? "bg-white shadow-sm dark:bg-gray-800"
+                    : ""
+                }`}
+              >
+                <span
+                  className={
+                    selected
+                      ? "text-purple-900 dark:text-purple-200"
+                      : undefined
+                  }
+                >
+                  {tab.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div
+          id="projects-panel"
+          role="tabpanel"
+          aria-labelledby={`tab-${activeTab}`}
+          tabIndex={0}
+          className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-purple-700"
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3"
+            >
+              {projects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
             </motion.div>
-          ))}
-        </motion.div>
-      </AnimatePresence>
+          </AnimatePresence>
+        </div>
+      </div>
     </section>
   );
 }

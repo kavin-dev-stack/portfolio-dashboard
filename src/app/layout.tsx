@@ -10,8 +10,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kavin's Portfolio",
-  description: "Kavin's portfolio description",
+  metadataBase: new URL("https://kavins-projects-6e7b51b1.vercel.app"),
+  title: "Kavin Balamurugan | Software Engineer – Full-Stack & AI Applications",
+  description:
+    "Software Engineer with 5+ years of experience building enterprise applications, modern frontend platforms, backend services and AI-powered solutions. Explore my projects, technical experience and engineering journey.",
+  openGraph: {
+    type: "website",
+    siteName: "Kavin Balamurugan",
+    title: "Kavin Balamurugan | Software Engineer – Full-Stack & AI Applications",
+    description:
+      "Software Engineer with 5+ years of experience building enterprise applications, modern frontend platforms, backend services and AI-powered solutions. Explore my projects, technical experience and engineering journey.",
+    images: [
+      {
+        url: "/social-preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Kavin Balamurugan, Software Engineer — Full-Stack & AI Applications",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kavin Balamurugan | Software Engineer – Full-Stack & AI Applications",
+    description:
+      "Software Engineer with 5+ years of experience building enterprise applications, modern frontend platforms, backend services and AI-powered solutions. Explore my projects, technical experience and engineering journey.",
+    images: ["/social-preview.png"],
+  },
 };
 
 export default function RootLayout({

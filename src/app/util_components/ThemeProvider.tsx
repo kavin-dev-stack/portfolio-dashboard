@@ -1,23 +1,22 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 export default function ThemeProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [darkMode, setDarkMode] = useState(false);
-
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     const systemPrefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
+    const shouldUseDark = savedTheme
+      ? savedTheme === "dark"
+      : systemPrefersDark;
 
-    if (savedTheme === "dark" || (!savedTheme && systemPrefersDark)) {
-      setDarkMode(true);
-      document.documentElement.classList.add("dark");
-    }
+    document.documentElement.classList.toggle("dark", shouldUseDark);
+    window.dispatchEvent(new Event("themeChange"));
   }, []);
 
   return <>{children}</>;

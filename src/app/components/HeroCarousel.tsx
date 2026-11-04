@@ -1,31 +1,55 @@
-import { skills } from "../data/skillsData";
-import { motion } from "framer-motion";
+"use client";
+
+import { skills, technologyTone } from "../data/skillsData";
+
+const featuredNames = [
+  "Angular 13–22",
+  "React",
+  "TypeScript",
+  "Python",
+  "ASP.NET Core",
+  "FastAPI",
+  "Gemini",
+  "RAG",
+];
+
+const featuredSkills = featuredNames
+  .map((name) => skills.find((skill) => skill.name === name))
+  .filter((skill): skill is (typeof skills)[number] => Boolean(skill));
 
 export default function HeroCarousel() {
-  return (
-    <div className="relative overflow-hidden max-w-sm md:max-w-sm lg:max-w-2xl mx-auto py-4">
-      <motion.div
-        className="flex gap-4"
-        animate={{ x: ["0%", "-100%"] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      >
-        {[...skills, ...skills].map((skill, i) => {
-          const Icon = skill.icon;
-          return (
-            <span
-              key={i}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full shadow-md ${skill.bg} ${skill.color} whitespace-nowrap`}
-            >
-              <Icon className="text-lg" />
-            </span>
-          );
-        })}
-      </motion.div>
-      {/* Fade overlay on the left */}
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-purple-100 dark:from-black to-white/0"></div>
+  const skillItems = () =>
+    featuredSkills.map((skill) => {
+      const Icon = skill.icon;
+      return (
+        <span
+          key={skill.name}
+          className={`technology-pill inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-sm font-medium shadow-sm ${technologyTone(skill.name)}`}
+        >
+          <Icon aria-hidden="true" className="technology-icon" />
+          {skill.name}
+        </span>
+      );
+    });
 
-      {/* Fade overlay on the right */}
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-indigo-300 md:from-indigo-200 dark:from-purple-900 md:dark:from-indigo-950 to-white/0"></div>
+  return (
+    <div className="w-full max-w-2xl py-2">
+      <ul className="sr-only" aria-label="Featured technologies">
+        {featuredSkills.map((skill) => (
+          <li key={skill.name}>{skill.name}</li>
+        ))}
+      </ul>
+
+      <div aria-hidden="true" className="hero-skills-mask relative overflow-hidden py-1">
+        <div className="hero-skills-track flex w-max">
+          <div className="hero-skills-group flex shrink-0 gap-2.5 pr-2.5">
+            {skillItems()}
+          </div>
+          <div className="hero-skills-group hero-skills-group--duplicate flex shrink-0 gap-2.5 pr-2.5">
+            {skillItems()}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

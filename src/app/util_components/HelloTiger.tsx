@@ -1,36 +1,22 @@
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 
 export const HelloTiger = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
 
-  // Get top offset of the section
-  const [offsetTop, setOffsetTop] = useState(500);
-
-  useEffect(() => {
-    if (ref.current) {
-      setOffsetTop(ref.current.offsetTop);
-    }
-  }, [ref]);
-
-  // Animate only when section is visible
-  const y = useTransform(
-    scrollY,
-    [offsetTop - 600, offsetTop + 600],
-    [100, -100]
-  );
-  const scale = useTransform(
-    scrollY,
-    [offsetTop - 600, offsetTop + 600],
-    [1, 1.05]
-  );
-  const rotate = useTransform(
-    scrollY,
-    [offsetTop - 600, offsetTop + 600],
-    [0, 5]
-  );
+  const y = useTransform(scrollYProgress, [0, 1], [24, -24]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.96, 1.04]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 2]);
 
   const smoothY = useSpring(y, { stiffness: 100, damping: 20 });
   const smoothScale = useSpring(scale, { stiffness: 100, damping: 20 });
@@ -39,12 +25,15 @@ export const HelloTiger = () => {
   return (
     <motion.div
       style={{ y: smoothY, scale: smoothScale, rotate: smoothRotate }}
-      className="absolute md:top-[715px] md:left-[0] lg:top-[674px] lg:left-[-40] w-1/2 h-full hidden md:block pointer-events-none z-0"
+      ref={ref}
+      aria-hidden="true"
+      className="hello-tiger-motion pointer-events-none h-full w-full"
     >
       <Image
         src="/gifs/Cute Robot.gif"
-        alt="Animated background"
-        className="w-50 h-50 object-contain"
+        alt=""
+        unoptimized
+        className="h-full w-full object-contain"
         width={300}
         height={300}
       />
